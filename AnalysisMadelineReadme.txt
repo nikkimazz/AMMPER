@@ -23,7 +23,9 @@ Cell types: WT, rad51
 Note current pipeline only plots 0, 2.5 and 30 Gy for Ion (WT) and Gamma (rad51) 
 
 Warnings:
-1.- We need to repeat analysis radGen needs to be 2 for both ion and Gamma, currently is not, we might require to do 4 rank tensor gridsearch if plots change a lot ** 
+1.- We need to repeat analysis radGen needs to be 2 for both ion and Gamma
+2.- For gamma experimental data is slightly delayed we need to adjust prediction and experimental times. I think it starts at hour 4 this can be done in code or skipping the first 4 hours from raw data while feeding to model
+
 
 Procedure:
 
