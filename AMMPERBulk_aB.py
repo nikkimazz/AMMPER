@@ -60,7 +60,7 @@ if radType == "a":
     radType = "150 MeV Proton"
     gen = 15
     # Before 2 <<<- Trying higher generation to see difference between diffusion and lifetime model and old model.
-    radGen = 12
+    radGen = 2
     N = 64
     if Gy == 0:
         radData = 0
@@ -82,7 +82,7 @@ elif radType == "c":
 elif radType == 'd':
     radType = "Gamma"
     gen = 15
-    radGen = 10
+    radGen = 2
     #radGenE = 10
     N = 64 # real 64 ? 
 

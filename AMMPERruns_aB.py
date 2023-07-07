@@ -1,7 +1,7 @@
 import sys
 import os
 
-for i in range(30):
+for i in range(2):
 
     print("Sample running: " + str(i))
 
@@ -9,3 +9,5 @@ for i in range(30):
     os.system("python .\AMMPERBulk_aB.py a a a 0 WT_Basic_0")
     os.system("python .\AMMPERBulk_aB.py a a a 2.5 WT_Basic_25")
     os.system("python .\AMMPERBulk_aB.py a a a 30 WT_Basic_300")
+    
+    # 

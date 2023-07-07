@@ -75,7 +75,7 @@ elif radType == "c":
 elif radType == 'd':
     radType = "Gamma"
     gen = 15
-    radGen = 10
+    radGen = 2
     #radGenE = 10
     N = 64 # real 64 ? 
 
