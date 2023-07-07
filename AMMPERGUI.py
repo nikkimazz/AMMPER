@@ -203,31 +203,30 @@ class Widget(QWidget):
         if self.checkBox_2.isChecked():
             display = True
 
-    def simDesc(self):
-        self.simDescription = "Cell Type: " + self.cellType + "\nRad Type: " + self.radType + "\nSim Dim: " + 
-        str(self.N) + "microns\nNumGen: " + str(self.gen) + "ROS model: " + str(self.ROSType)
-
-    # Amrita & Daniel's code, with Maddie's editing
-
-    # results folder name with the time that the simulation completed
-    resultsName = time.strftime('%m-%d-%y_%H-%M') + "/"
-    # determine path that all results will be written to
-    resultsFolder = "Results/"
-    currPath = os.path.dirname("AMMPER")
-    allResults_path = os.path.join(currPath,resultsFolder)
-    currResult_path = os.path.join(allResults_path,resultsName)
-    plots_path = os.path.join(currResult_path,"Plots/")
-
-    # if any of the folders do not exist, create them
-    if not os.path.isdir(resultsFolder):
-        os.makedirs(resultsFolder)
-    if not os.path.isdir(currResult_path):
-        os.makedirs(currResult_path)
-    if not os.path.isdir(plots_path):
-        os.makedirs(plots_path)
-
-    # write description to file
-    np.savetxt(currResult_path+'simDescription.txt',[simDescription],fmt='%s')
+    # def simDesc(self):
+    #     self.simDescription = "Cell Type: " + self.cellType + "\nRad Type: " + self.radType + "\nSim Dim: " + str(self.N) + "microns\nNumGen: " + str(self.gen) + "ROS model: " + str(self.ROSType)
+    #
+    # # Amrita & Daniel's code, with Maddie's editing
+    #
+    # # results folder name with the time that the simulation completed
+    # resultsName = time.strftime('%m-%d-%y_%H-%M') + "/"
+    # # determine path that all results will be written to
+    # resultsFolder = "Results/"
+    # currPath = os.path.dirname("AMMPER")
+    # allResults_path = os.path.join(currPath,resultsFolder)
+    # currResult_path = os.path.join(allResults_path,resultsName)
+    # plots_path = os.path.join(currResult_path,"Plots/")
+    #
+    # # if any of the folders do not exist, create them
+    # if not os.path.isdir(resultsFolder):
+    #     os.makedirs(resultsFolder)
+    # if not os.path.isdir(currResult_path):
+    #     os.makedirs(currResult_path)
+    # if not os.path.isdir(plots_path):
+    #     os.makedirs(plots_path)
+    #
+    # # write description to file
+    # np.savetxt(currResult_path+'simDescription.txt',[self.simDescription],fmt='%s')
 """
     # SIMULATION SPACE INITIALIZATION
 
