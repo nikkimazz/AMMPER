@@ -466,7 +466,7 @@ if radType == "150 MeV Proton":
     dat_path = currResult_path + datName + ".txt"
     np.savetxt(dat_path,data,delimiter = ',')
     # if ROSData != 0: for 0 Gy
-    cellPlot(data, gen, radData,ROSData,radGen,N,plots_path)
+    cellPlot(data,gen,radData,ROSData,radGen,N,plots_path)
 
 elif radType == "Deep Space":
     datName = 'deepSpace'

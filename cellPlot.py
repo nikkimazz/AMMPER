@@ -5,6 +5,10 @@ Created on Mon Feb  7 08:31:34 2022
 @author: asingh21
 """
 
+"""
+Fixed daniel * 
+"""
+
 import pandas as pd
 import numpy as np
 
@@ -19,8 +23,8 @@ def get_fixed_mins_maxs(mins, maxs):
 
 
 def cellPlot(data,gen,radData,ROSData,radGen,N,plots_dir):
-    from matplotlib import pyplot as plt
-    
+    import matplotlib.pyplot as plt
+
     minmax = get_fixed_mins_maxs(0, N)
 
     # COLOR BLIND SAFE COLORS
@@ -36,17 +40,17 @@ def cellPlot(data,gen,radData,ROSData,radGen,N,plots_dir):
 
 
     for g in range(gen+1):
-        figName = 'fig' + str(g)
-        axName = 'ax' + str(g)
-        #plt.style.use('seaborn-poster')
-        locals()[figName] = plt.figure()
-        locals()[axName] = locals()[figName].add_subplot(projection='3d')
-        locals()[axName].set_xlim(minmax)
-        locals()[axName].set_ylim(minmax)
-        locals()[axName].set_zlim(minmax)
-        locals()[axName].set_xlabel('X')
-        locals()[axName].set_ylabel('Y')
-        locals()[axName].set_zlabel('Z')
+
+        fig = plt.figure(g)
+        figName = "fig" + str(g)
+        ax = fig.add_subplot(projection='3d')
+
+        ax.set_xlim(minmax)
+        ax.set_ylim(minmax)
+        ax.set_zlim(minmax)
+        ax.set_xlabel('X')
+        ax.set_ylabel('Y')
+        ax.set_zlabel('Z')
         plt.title('g = ' + str(g))
 
         #########################
@@ -61,40 +65,11 @@ def cellPlot(data,gen,radData,ROSData,radGen,N,plots_dir):
         data1 = data1.to_numpy()
         data2 = data2.to_numpy()
         data3 = data3.to_numpy()
-        # print(g)
-        # # axName = 'ax' + str(g)  #### <------
-        # print(axName)
 
-        locals()[axName].scatter(data1[:, 1], data1[:, 2], data1[:, 3], c=healthy, alpha=0.15, marker = 'o')
-        locals()[axName].scatter(data2[:, 1], data2[:, 2], data2[:, 3], c=damaged, alpha=1, marker = '^')
-        locals()[axName].scatter(data3[:, 1], data3[:, 2], data3[:, 3], c=dead, alpha=1, marker = '*')
-        locals()[axName].scatter(radData[:, 0], radData[:, 1], radData[:, 2], c='#9ED9A1', alpha=1, marker = 'o')
+        ax.scatter(data1[:, 1], data1[:, 2], data1[:, 3], c=healthy, alpha=0.15, marker = 'o')
+        ax.scatter(data2[:, 1], data2[:, 2], data2[:, 3], c=damaged, alpha=1, marker = '^')
+        ax.scatter(data3[:, 1], data3[:, 2], data3[:, 3], c=dead, alpha=1, marker = '*')
+        ax.scatter(radData[:, 0], radData[:, 1], radData[:, 2], c='#9ED9A1', alpha=1, marker = 'o')
         
-    
-    for g in range(gen+1):
-        figName = 'fig' + str(g)
-        locals()[figName].savefig(plots_dir + figName, dpi = 1200)
+        fig.savefig(plots_dir + figName, dpi = 300)
 
-        # radName = 'ax' + str(radGen)
-        #
-    #     if type(radData) != int:
-    # #     n = len(radData)
-    ### radPos = [radData[i, 0], radData[i, 1], radData[i, 2]]
-    ########################## >>> <<< ##################
-
-    #    radName = 'ax' + str(radGen)
-    #
-    # if type(radData) != int:
-    #     n = len(radData)
-    #     for i in range(n):
-    #         locals()[radName].scatter(radData[i,0],radData[i,1],radData[i,2],s = 10,c = 'yellow')
-##### PLOT ROS, for now plot only radiation events as ROS because ROS now is difussing through medium, don't plot
-# planes yet to avoid heavy computational time.
-
-
-# if type(ROSData) != int:
-#     n = len(ROSData)
-#     for g in range(gen+1):
-#         if g >= radGen:
-#             ROSName = 'ax' + str(g)
-#             locals()[ROSName].scatter(ROSData[:,0],ROSData[:,1],ROSData[:,2],s = 5,c = '#9ED9A1', alpha = 1)
