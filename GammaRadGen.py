@@ -11,7 +11,9 @@ def GammaRadGen(dose):
     from random import randint
 
     # radData = pd.Dataframe(columns = ["X", "Y", "Z", "energy"])
-    
+
+    if dose == 0:
+        print("ERROR: Gamma model does not run 0 Gy doses, run Ion model for 0 Gy instead ...")
     # N is size of all space in this case is 64
     N = 64
     min_y = 0
@@ -38,7 +40,7 @@ def GammaRadGen(dose):
             # need to create a list of previously chosen randy and randz, in the next for loop,
             # we need to restrict this choice. Something like: If randY and Z in list then do nothing
     radData = radtensor
-    
+
     return radData
 
 

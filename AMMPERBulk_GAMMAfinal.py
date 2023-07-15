@@ -168,11 +168,12 @@ for g in range(1,gen+1):
         if g == radGen:
             
             dose = float(radAmount)
+
             # radData = np.zeros([1, 6], dtype=float)
             # Dose input, radGenE stop point for gamma radiation.
             radData = GammaRadGen(dose)
             # radData = np.delete(radData, (0), axis=0)
-            
+
             if ROSType == "Complex ROS":
                 ROSData = genROS(radData, cells)
             if ROSType == "Basic ROS":
