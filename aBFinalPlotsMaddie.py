@@ -21,6 +21,12 @@ from scipy.interpolate import interp1d
 from sklearn.metrics import accuracy_score
 
 
+# if Daniel
+main_directory = "C:\\Users\\danie\\Desktop\\Daniel_Master_Directory\\AMMPER\\AMMPER_NEW\\AMMPER"
+
+# if madeline
+
+# main_directory = C:\\Users\\alder\\OneDrive\\Desktop\\AMMPERunofficial-main
 def AlamarblueMechanics(results,var, title):
     # v = d/dt([Clear])  == V_max ([Pink]/ K_M + [Pink])
     Healthy = results.loc[results["Health"] == 1]
@@ -178,7 +184,7 @@ def main_DP(name, data1, data1_std):
     #name = "WT_Basic_0"
     P_m = []
     B_m = []
-    for root, dirs, files in os.walk(r"C:\Users\alder\OneDrive\Desktop\AMMPERunofficial-main\Results_Bulk_aB" + '\\' + str(name)):
+    for root, dirs, files in os.walk(os.path.join(main_directory, "Results_Bulk_aB", name)):
         if len(files) > 1:
             namess = ["Generation", "x", "y", "z", "Health"]
             resultsi = pd.read_csv(os.path.join(root, files[0]), names= namess)
@@ -347,44 +353,44 @@ GENCONVER = 198 # 198 min for ion conversion data  205.62 for gamma radation
 namesk = ['Time', 'A570', 'A600', 'A690', 'A750']
 
     ##############
-data1 = pd.read_csv(r'C:\Users\alder\OneDrive\Desktop\AMMPERunofficial-main\AlamarblueRawdataWTKGy.csv',
+data1 = pd.read_csv( main_directory + "\\AlamarblueRawdataWTKGy.csv",
                        names = namesk) # Average 0 Gy, use Average data instead of single data >>>>>>> <<<<<<<<<<<< Re run 4 rank tensor gridsearch
 
-data2 = pd.read_csv(r'C:\Users\alder\OneDrive\Desktop\AMMPERunofficial-main\AlamarblueRawdataWT25Gy.csv',
+data2 = pd.read_csv(main_directory + '\\AlamarblueRawdataWT25Gy.csv',
                        names = namesk) # Average 0 Gy, use Average data instead of single data >>>>>>> <<<<<<<<<<<< Re run 4 rank tensor gridsearch
 
-data3 = pd.read_csv(r'C:\Users\alder\OneDrive\Desktop\AMMPERunofficial-main\AlamarblueRawdataWT30Gy.csv',
+data3 = pd.read_csv(main_directory + '\\AlamarblueRawdataWT30Gy.csv',
                        names = namesk) # Average 0 Gy, use Average data instead of single data >>>>>>> <<<<<<<<<<<< Re run 4 rank tensor gridsearch
 
-data1STD = pd.read_csv(r'C:\Users\alder\OneDrive\Desktop\AMMPERunofficial-main\AlamarblueRawdataWTKGySTD.csv',
+data1STD = pd.read_csv(main_directory + '\\AlamarblueRawdataWTKGySTD.csv',
                        names = namesk) # Average 0 Gy, use Average data instead of single data >>>>>>> <<<<<<<<<<<< Re run 4 rank tensor gridsearch
 # "
 
-data2STD = pd.read_csv(r'C:\Users\alder\OneDrive\Desktop\AMMPERunofficial-main\AlamarblueRawdataWT25GySTD.csv',
+data2STD = pd.read_csv(main_directory + '\\AlamarblueRawdataWT25GySTD.csv',
                        names = namesk) # Average 0 Gy, use Average data instead of single data >>>>>>> <<<<<<<<<<<< Re run 4 rank tensor gridsearch
 
-data3STD = pd.read_csv(r'C:\Users\alder\OneDrive\Desktop\AMMPERunofficial-main\AlamarblueRawdataWT30GySTD.csv',
+data3STD = pd.read_csv(main_directory + '\\AlamarblueRawdataWT30GySTD.csv',
                        names = namesk) # Average 0 Gy, use Average data instead of single data >>>>>>> <<<<<<<<<<<< Re run 4 rank tensor gridsearch
 
 #rad51 type
 
-data4 = pd.read_csv(r'C:\Users\alder\OneDrive\Desktop\AMMPERunofficial-main\AlamarblueRawdatarad51KGy.csv',
+data4 = pd.read_csv(main_directory + '\\AlamarblueRawdatarad51KGy.csv',
                        names = namesk) # Average 0 Gy, use Average data instead of single data >>>>>>> <<<<<<<<<<<< Re run 4 rank tensor gridsearch
 
-data5 = pd.read_csv(r'C:\Users\alder\OneDrive\Desktop\AMMPERunofficial-main\AlamarblueRawdatarad5125Gy.csv',
+data5 = pd.read_csv(main_directory + '\\AlamarblueRawdatarad5125Gy.csv',
                        names = namesk) # Average 0 Gy, use Average data instead of single data >>>>>>> <<<<<<<<<<<< Re run 4 rank tensor gridsearch
 
-data6 = pd.read_csv(r'C:\Users\alder\OneDrive\Desktop\AMMPERunofficial-main\AlamarblueRawdatarad5130Gy.csv',
+data6 = pd.read_csv(main_directory + '\\AlamarblueRawdatarad5130Gy.csv',
                        names = namesk) # Average 0 Gy, use Average data instead of single data >>>>>>> <<<<<<<<<<<< Re run 4 rank tensor gridsearch
 
-data4STD = pd.read_csv(r'C:\Users\alder\OneDrive\Desktop\AMMPERunofficial-main\AlamarblueRawdatarad51KGySTD.csv',
+data4STD = pd.read_csv(main_directory + '\\AlamarblueRawdatarad51KGySTD.csv',
                        names = namesk) # Average 0 Gy, use Average data instead of single data >>>>>>> <<<<<<<<<<<< Re run 4 rank tensor gridsearch
 # "
 
-data5STD = pd.read_csv(r'C:\Users\alder\OneDrive\Desktop\AMMPERunofficial-main\AlamarblueRawdatarad5125GySTD.csv',
+data5STD = pd.read_csv(main_directory + '\\AlamarblueRawdatarad5125GySTD.csv',
                        names = namesk) # Average 0 Gy, use Average data instead of single data >>>>>>> <<<<<<<<<<<< Re run 4 rank tensor gridsearch
 
-data6STD = pd.read_csv(r'C:\Users\alder\OneDrive\Desktop\AMMPERunofficial-main\AlamarblueRawdatarad5130GySTD.csv',
+data6STD = pd.read_csv(main_directory + '\\AlamarblueRawdatarad5130GySTD.csv',
                        names = namesk) # Average 0 Gy, use Average data instead of single data >>>>>>> <<<<<<<<<<<< Re run 4 rank tensor gridsearch
 
 
