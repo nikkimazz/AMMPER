@@ -22,8 +22,8 @@ from sklearn.metrics import accuracy_score
 
 
 # if Daniel
-main_directory = "C:\\Users\\danie\\Desktop\\Daniel_Master_Directory\\AMMPER\\AMMPER_NEW\\AMMPER"
-
+#main_directory = "C:\\Users\\danie\\Desktop\\Daniel_Master_Directory\\AMMPER\\AMMPER_NEW\\AMMPER"
+main_directory = "C:\\Users\\danie\\Desktop\\Daniel_Master_Directory\\AMMPEROut_2023May"
 # if madeline
 
 # main_directory = C:\\Users\\alder\\OneDrive\\Desktop\\AMMPERunofficial-main
@@ -184,9 +184,16 @@ def main_DP(name, data1, data1_std):
     #name = "WT_Basic_0"
     P_m = []
     B_m = []
+
+    print(os.path.join(main_directory, "Results_Bulk_aB", name))
     for root, dirs, files in os.walk(os.path.join(main_directory, "Results_Bulk_aB", name)):
+
         if len(files) > 1:
             namess = ["Generation", "x", "y", "z", "Health"]
+            print(root)
+            print(dirs)
+            print(files)
+            print("Working" + name)
             resultsi = pd.read_csv(os.path.join(root, files[0]), names= namess)
             Bi, Pi, t = AlamarblueMechanics(resultsi,
                                          [0.75,1.65,500,8000, 1/2], 'k')
@@ -198,7 +205,6 @@ def main_DP(name, data1, data1_std):
             # [1.4777777777777779, 2, 6444.444444444444, 3427.777777777778, 1 / 2]
             B_m.append(Bi)
             P_m.append(Pi)
-
 
     B_m = np.stack(B_m, axis = 0)
     P_m = np.stack(P_m, axis = 0)
@@ -247,7 +253,14 @@ def main_DP(name, data1, data1_std):
 
     # Data with generation time ******
     Healthy = resultsi.loc[resultsi["Health"] == 1]
+
+    #
+    #print(Healthy)
+    #
+    #Healthy['Generation'] = Healthy['Generation'].fillna(0)
+
     Generations = np.linspace(0, int(Healthy['Generation'].max()), num=len(Healthy['Generation'].unique()))
+
     # Generation to hrs ->> Conversion
     Generations_t =  Generations * GENCONVER / 60
 
@@ -396,18 +409,18 @@ data6STD = pd.read_csv(main_directory + '\\AlamarblueRawdatarad5130GySTD.csv',
 
 plt.figure(1)
 # Takes name of folder with AMMPER runs, and takes corresponding experimental data, computes aB plots with error intervals
-main_DP("WT_Basic_10", data1, data1STD)
+main_DP("WT_Basic_0", data1, data1STD)
 plt.figure(2)
 main_DP("WT_Basic_25", data2, data2STD)
 plt.figure(3)
 main_DP("WT_Basic_300", data3, data3STD)
-plt.show()
 
-plt.figure(1)
+
+plt.figure(4)
 # Takes name of folder with AMMPER runs, and takes corresponding experimental data, computes aB plots with error intervals
-main_DP("rad51_Basic_10", data4, data4STD)
-plt.figure(2)
+main_DP("rad51_Basic_0", data1, data1STD)
+plt.figure(5)
 main_DP("rad51_Basic_25", data5, data5STD)
-plt.figure(3)
+plt.figure(6)
 main_DP("rad51_Basic_300", data6, data6STD)
 plt.show()
