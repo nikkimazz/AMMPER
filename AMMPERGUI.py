@@ -639,7 +639,7 @@ class Widget(QWidget):
         self.stackedWidget.setCurrentIndex(3)
 
         # Setting label properties
-        self.ui.label_4.setAlignment(Qt.AlignCenter)
+        """self.ui.label_4.setAlignment(Qt.AlignCenter)
         self.ui.label_4.setScaledContents(True)
         self.ui.label_19.setAlignment(Qt.AlignCenter)
         self.ui.label_19.setScaledContents(True) 
@@ -650,7 +650,7 @@ class Widget(QWidget):
         self.ui.label_5.setAlignment(Qt.AlignCenter)
         self.ui.label_5.setScaledContents(True) 
         self.ui.label_13.setAlignment(Qt.AlignCenter)
-        self.ui.label_13.setScaledContents(True) 
+        self.ui.label_13.setScaledContents(True) """
 
         #gen1
         path1 = "Results" + "\\" + self.resultsName + "\fig3.png"
