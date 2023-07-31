@@ -13,8 +13,6 @@ from time import sleep
 import subprocess
 import random
 
-import matplotlib.pyplot as plt
-
 from PySide6.QtWidgets import QApplication, QWidget
 from PySide6.QtGui import QPixmap
 from ui_form import Ui_Widget # AMMPER interface 
@@ -36,6 +34,7 @@ import time
 import pandas as pd
 import time
 from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
 start_time = time.time()
 
 class Widget(QWidget):
