@@ -13,7 +13,7 @@ from time import sleep
 import subprocess
 import random
 
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 from PySide6.QtWidgets import QApplication, QWidget
 from PySide6.QtGui import QPixmap
