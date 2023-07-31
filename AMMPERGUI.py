@@ -162,6 +162,8 @@ class Widget(QWidget):
             self.gen = 15
             self.radGen = 2
             self.N = 64
+            self.radData = np.zeros([1,6],dtype = float)
+            self.ROSData = np.zeros([1,6],dtype = float)
         elif self.radioButton_3.isChecked():
             self.sliderOn = False
             self.radType = "Deep Space"
@@ -169,12 +171,16 @@ class Widget(QWidget):
             self.N = 300
             self.radGen = 0
             self.Gy = 0
+            self.radData = np.zeros([1,6],dtype = float)
+            self.ROSData = np.zeros([1,6],dtype = float)
         elif self.radioButton_4.isChecked():
             self.sliderOn = False
             self.radType = "Gamma"
             self.gen = 15
             self.radGen = 10
             self.N = 64
+            self.radData = np.zeros([1,6],dtype = float)
+            self.ROSData = np.zeros([1,6],dtype = float)
 
     def Slider(self):
         if self.sliderOn == True:
