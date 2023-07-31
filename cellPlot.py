@@ -70,6 +70,6 @@ def cellPlot(data,gen,radData,ROSData,radGen,N,plots_dir):
         ax.scatter(data2[:, 1], data2[:, 2], data2[:, 3], c=damaged, alpha=1, marker = '^')
         ax.scatter(data3[:, 1], data3[:, 2], data3[:, 3], c=dead, alpha=1, marker = '*')
         ax.scatter(radData[:, 0], radData[:, 1], radData[:, 2], c='#9ED9A1', alpha=1, marker = 'o')
-        
+
         fig.savefig(plots_dir + figName, dpi = 300)
 
