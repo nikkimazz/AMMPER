@@ -153,9 +153,9 @@ class Widget(QWidget):
             self.gen = 15
             self.radGen = 2
             self.N = 64
-            if self.Gy == 0:
+            """if self.Gy == 0:
                 self.radData = 0
-                self.ROSData = 0
+                self.ROSData = 0"""
         elif self.radioButton_2.isChecked():
             self.sliderOn = False
             self.radType = "GCRSim"
