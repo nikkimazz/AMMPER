@@ -120,8 +120,7 @@ class Widget(QWidget):
         self.display = False
         self.fileWritten = False
         self.pushButton_4.setEnabled(False)
-        self.radData = 0
-        self.ROSData = 0
+        self.dirRadCells = []
 
     def pushButton_clicked(self):
         self.stackedWidget.setCurrentIndex(1)
@@ -460,7 +459,7 @@ class Widget(QWidget):
         # if radiation traversal has occured
         if (self.radType == "150 MeV Proton" and g == self.radGen and self.Gy != 0) or (self.radType == "Deep Space") or (self.radType == "GCRSim" and g == self.radGen) or (self.radType == "Gamma" and g >= self.radGen):
             # initialize list of cells affected by ion/electron energy depositions
-            dirRadCells = []
+            self.dirRadCells = []
             for c in cells:
                 health = c.health
                 if self.cellType == "wt":
@@ -472,7 +471,7 @@ class Widget(QWidget):
                     if health != newHealth:
                         radCellPos = radCell.position
                         T[radCellPos[0],radCellPos[1],radCellPos[2]] = newHealth
-                        dirRadCells.append(radCell)
+                        self.dirRadCells.append(radCell)
                         ######################################################################
         # if ROS generation has occured (post-radiation)
         if (self.radType == "150 MeV Proton" and g >= self.radGen and self.Gy != 0) or (self.radType == "Deep Space") or (self.radType == "GCRSim" and g >= self.radGen) or (self.radType == "Gamma" and g >= self.radGen):
@@ -519,7 +518,7 @@ class Widget(QWidget):
         if (self.radType == "150 MeV Proton" and g >= self.radGen and self.Gy != 0) or self.radType == "Deep Space" or (self.radType == "GCRSim" and g >= self.radGen) or (self.radType == "Gamma" and g >= self.radGen):
             # for every cell damaged by ion or electron energy depositions
 
-            for c in dirRadCells:
+            for c in self.dirRadCells:
                 # get information about damaged cell
                 cUUID = c.UUID
                 newHealth = c.health
