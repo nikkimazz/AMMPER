@@ -652,7 +652,7 @@ class Widget(QWidget):
         self.ui.label_13.setAlignment(Qt.AlignCenter)
         self.ui.label_13.setScaledContents(True) """
 
-        #gen1
+      """  #gen1
         path1 = "Results" + "\\" + self.resultsName + "\fig3.png"
         pixmapg3 = QPixmap(path3)
         self.ui.label_4.setPixmap(pixmapg3)
@@ -675,7 +675,7 @@ class Widget(QWidget):
         #gen15
         path15 = "Results" + "\\" + self.resultsName + "\fig15.png"
         pixmapg15 = QPixmap(path15)
-        self.ui.label_13.setPixmap(pixmapg15)
+        self.ui.label_13.setPixmap(pixmapg15) """
 
         self.ui.label.setText("time elapsed: \n{:.2f}s".format(time.time() - start_time))
 
