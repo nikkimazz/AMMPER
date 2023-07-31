@@ -518,6 +518,7 @@ class Widget(QWidget):
         # if radiation has occurred
         if (self.radType == "150 MeV Proton" and g >= self.radGen and self.Gy != 0) or self.radType == "Deep Space" or (self.radType == "GCRSim" and g >= self.radGen) or (self.radType == "Gamma" and g >= self.radGen):
             # for every cell damaged by ion or electron energy depositions
+
             for c in dirRadCells:
                 # get information about damaged cell
                 cUUID = c.UUID
