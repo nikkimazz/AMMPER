@@ -154,8 +154,8 @@ class Widget(QWidget):
             self.radGen = 2
             self.N = 64
             if self.Gy == 0:
-                self.radData = np.zeros([1,7],dtype = float)
-                self.ROSData = np.zeros([1,7],dtype = float)
+                self.radData = np.zeros([1,6],dtype = float)
+                self.ROSData = np.zeros([1,6],dtype = float)
         elif self.radioButton_2.isChecked():
             self.sliderOn = False
             self.radType = "GCRSim"
