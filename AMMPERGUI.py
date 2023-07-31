@@ -601,7 +601,7 @@ class Widget(QWidget):
         # for each simulation type, write the data to a text file titled by the radType
         # for each simulation type, plot the data as 1 figure/generation
   
-        fig, ax = plt.subplots()
+        #fig, ax = plt.subplots()
 
         if self.radType == "150 MeV Proton":
             datName = str(self.radAmount)+'Gy'
@@ -611,7 +611,7 @@ class Widget(QWidget):
                 # if ROSData != 0: for 0 Gy
                 cellPlot(data, self.gen, self.radData,self.ROSData,self.radGen,self.N,plots_path)
             if self.display:
-                cellPlot(data, self.gen, self.radData,str(self.ROSData),str(self.radGen),self.N, str(ax))
+                cellPlot(data, self.gen, self.radData,str(self.ROSData),str(self.radGen),self.N, plots_path)
 
         elif self.radType == "Deep Space":
             datName = 'deepSpace'
@@ -620,7 +620,7 @@ class Widget(QWidget):
                 np.savetxt(dat_path,data,delimiter = ',')
                 cellPlot(data, self.gen, radData,ROSData,self.radGen,self.N,plots_path)
             if self.display:
-                cellPlot(data, self.gen, radData,ROSData,self.radGen,self.N,ax)
+                cellPlot(data, self.gen, radData,ROSData,self.radGen,self.N,plots_path)
             
         elif self.radType == "GCRSim":
             datName = 'GCRSim'
@@ -629,7 +629,7 @@ class Widget(QWidget):
                 np.savetxt(dat_path,data,delimiter = ',')
                 cellPlot(data, self.gen, radData,ROSData,self.radGen,self.N,plots_path)
             if self.display:
-                cellPlot(data, self.gen, radData,ROSData,self.radGen,self.N,ax)
+                cellPlot(data, self.gen, radData,ROSData,self.radGen,self.N,plots_path)
 
         elif self.radType == "Gamma":
             datName = 'Gamma'
@@ -638,7 +638,7 @@ class Widget(QWidget):
                 np.savetxt(dat_path,data,delimiter = ',')
                 cellPlot(data, self.gen, radData,ROSData,self.radGen,self.N,plots_path)
             if self.display:
-                cellPlot(data, self.gen, radData,ROSData,self.radGen,self.N,ax)
+                cellPlot(data, self.gen, radData,ROSData,self.radGen,self.N,plots_path)
 
         self.progressBar.setValue(100)
         self.label_2.setText("Plots and data written.")
