@@ -231,7 +231,7 @@ class Widget(QWidget):
         resultsFolder = "Results/"
         #currPath = os.path.dirname("AMMPER")
         allResults_path = os.path.join(self.path,resultsFolder)
-        currResult_path = os.path.join(allResults_path,resultsName)
+        currResult_path = os.path.join(allResults_path,self.resultsName)
         plots_path = os.path.join(currResult_path,"Plots/")
 
     # if any of the folders do not exist, create them
