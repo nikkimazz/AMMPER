@@ -244,7 +244,7 @@ class Widget(QWidget):
         # determine path that all results will be written to
         resultsFolder = r"Results/"
         #currPath = os.path.dirname("AMMPER")
-        allResults_path = os.path.join(self.path,resultsFolder)
+        allResults_path = os.path.join(resultsFolder)
         self.currResult_path = os.path.join(allResults_path,self.resultsName)
         plots_path = os.path.join(self.currResult_path,r"Plots/")
 
