@@ -34,7 +34,7 @@ import pandas as pd
 import time
 from sklearn.model_selection import train_test_split
 start_time = time.time()
-from ui_form1 import Ui_Widget
+from formgui import Ui_Widget
 
 class Widget(QWidget):
     def __init__(self, parent=None):
@@ -165,6 +165,7 @@ class Widget(QWidget):
         self.ui.pushButton_9.clicked.connect(self.toggle_visibility1)
         self.ui.pushButton_10.clicked.connect(self.toggle_visibility2)
         self.ui.pushButton_11.clicked.connect(self.toggle_visibility3)
+        self.ui.pushButton_15.clicked.connect(self.goBack)
 
         # Connecting radio buttons.
         self.radioButton.toggled.connect(self.onRadioButtonClicked)
@@ -291,6 +292,9 @@ class Widget(QWidget):
         new_page_index = self.stacked_widget.count() - 1
         self.stacked_widget.setCurrentIndex(new_page_index)
         self.typeCount = self.typeCount + 1"""
+    
+    def goBack(self):
+        self.stackedWidget.setCurrentIndex(0)
 
     def onRadioButtonClicked(self):
         if self.radioButton.isChecked():
