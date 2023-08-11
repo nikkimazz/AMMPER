@@ -80,7 +80,7 @@ class Widget(QWidget):
         self.checkBox_2 = self.ui.checkBox_2
         self.checkBox_2.setChecked(True)
 
-        self.path = self.plainTextEdit.toPlainText()
+        # self.path = self.plainTextEdit.toPlainText()
 
         self.pushButton_4 = self.ui.pushButton_4
 
@@ -92,6 +92,8 @@ class Widget(QWidget):
         self.ui.pushButton_4.clicked.connect(self.simSetup) # Run Simulation
         self.ui.pushButton_5.clicked.connect(self.pushButton_5_clicked) # Exit
         self.ui.pushButton_6.clicked.connect(self.goBack) # Backwards Credits
+        self.ui.pushButton_7.clicked.connect(self.visualization) # Visualization
+        self.ui.pushButton_8.clicked.connect(self.pushButton_5_clicked) # Exit
 
         # Connecting radio buttons.
         self.radioButton.toggled.connect(self.onRadioButtonClicked)
@@ -303,7 +305,7 @@ class Widget(QWidget):
             current_value = self.progressBar.value() 
             self.progressBar.setValue(current_value + 5)
             sleep(1)
-            pathX = "/Results/Results/" + self.resultsName + "/Plots/fig" + str(g) + "1.png"
+            pathX = "/Results/" + self.resultsName + "/Plots/fig" + str(g) + "1.png"
             pixmapgX = QPixmap(pathX)
             self.ui.label_5.setPixmap(pixmapgX)
 
@@ -610,7 +612,7 @@ class Widget(QWidget):
                 ROSData = ROSDatak
 
         
-        self.label_2.setText("Complete.")
+        self.label_2.setText("Complete. Stand by.")
         self.progressBar.setValue(current_value + 5)
 
         # for each simulation type, write the data to a text file titled by the radType
@@ -657,103 +659,69 @@ class Widget(QWidget):
 
         self.progressBar.setValue(100)
         self.label_2.setText("Plots and data written.")
-
         self.ui.label.setText("Time elapsed: \n{:.2f}s".format(time.time() - start_time))
 
-        self.stackedWidget.setCurrentIndex(5)
-        self.ui.label_35.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.ui.label_35.setScaledContents(True)
+        sleep(1)
 
         #gen1
-        path1 = "/Results/" + self.resultsName + "/Plots/fig1.png"
-        pixmapg1 = QPixmap(path1)
+        path1 = "Results/" + self.resultsName + "/Plots/fig1.png"
+        self.pixmapg1 = QPixmap(path1)
 
         #gen2
         path2 = "/Results/" + self.resultsName + "/Plots/fig2.png"
-        pixmapg2 = QPixmap(path2)
+        self.pixmapg2 = QPixmap(path2)
 
         #gen3
         path3 = "/Results/" + self.resultsName + "/Plots/fig3.png"
-        pixmapg3 = QPixmap(path3)
+        self.pixmapg3 = QPixmap(path3)
         
         #gen4
         path4 = "/Results/" + self.resultsName + "/Plots/fig4.png"
-        pixmapg4 = QPixmap(path4)
+        self.pixmapg4 = QPixmap(path4)
 
         #gen5
         path5 = "/Results/" + self.resultsName + "/Plots/fig5.png"
-        pixmapg5 = QPixmap(path5)
+        self.pixmapg5 = QPixmap(path5)
 
         #gen6
         path6 = "/Results/" + self.resultsName + "/Plots/fig6.png"
-        pixmapg6 = QPixmap(path6)
+        self.pixmapg6 = QPixmap(path6)
 
         #gen7
         path7 = "/Results/" + self.resultsName + "/Plots/fig7.png"
-        pixmapg7 = QPixmap(path7)
+        self.pixmapg7 = QPixmap(path7)
 
         #gen8
         path8 = "/Results/" + self.resultsName + "/Plots/fig8.png"
-        pixmapg8 = QPixmap(path8)
+        self.pixmapg8 = QPixmap(path8)
 
         #gen9
         path9 = "/Results/" + self.resultsName + "/Plots/fig9.png"
-        pixmapg9 = QPixmap(path9)
+        self.pixmapg9 = QPixmap(path9)
 
         #gen10
         path10 = "/Results/" + self.resultsName + "/Plots/fig10.png"
-        pixmapg10 = QPixmap(path10)
+        self.pixmapg10 = QPixmap(path10)
         
         #gen11
         path11 = "/Results/" + self.resultsName + "/Plots/fig11.png"
-        pixmapg11 = QPixmap(path11)
+        self.pixmapg11 = QPixmap(path11)
 
         #gen12
         path12 = "/Results/" + self.resultsName + "/Plots/fig12.png"
-        pixmapg12 = QPixmap(path12)
+        self.pixmapg12 = QPixmap(path12)
 
         #gen13
         path13 = "/Results/" + self.resultsName + "/Plots/fig13.png"
-        pixmapg13 = QPixmap(path13)
+        self.pixmapg13 = QPixmap(path13)
 
         #gen14
         path14 = "/Results/" + self.resultsName + "/Plots/fig14.png"
-        pixmapg14 = QPixmap(path14)
+        self.pixmapg14 = QPixmap(path14)
 
         #gen15
         path15 = "/Results/" + self.resultsName + "/Plots/fig15.png"
-        pixmapg15 = QPixmap(path15)
-
-        self.ui.label_35.setPixmap(pixmapg1)
-        sleep(1)
-        self.ui.label_35.setPixmap(pixmapg2)
-        sleep(1)
-        self.ui.label_35.setPixmap(pixmapg3)
-        sleep(1)
-        self.ui.label_35.setPixmap(pixmapg4)
-        sleep(1)
-        self.ui.label_35.setPixmap(pixmapg5)
-        sleep(1)
-        self.ui.label_35.setPixmap(pixmapg6)
-        sleep(1)
-        self.ui.label_35.setPixmap(pixmapg7)
-        sleep(1)
-        self.ui.label_35.setPixmap(pixmapg8)
-        sleep(1)
-        self.ui.label_35.setPixmap(pixmapg9)
-        sleep(1)
-        self.ui.label_35.setPixmap(pixmapg10)
-        sleep(1)
-        self.ui.label_35.setPixmap(pixmapg11)
-        sleep(1)
-        self.ui.label_35.setPixmap(pixmapg12)
-        sleep(1)
-        self.ui.label_35.setPixmap(pixmapg13)
-        sleep(1)
-        self.ui.label_35.setPixmap(pixmapg14)
-        sleep(1)
-        self.ui.label_35.setPixmap(pixmapg15)
-        sleep(1)
+        self.pixmapg15 = QPixmap(path15)
 
         self.stackedWidget.setCurrentIndex(3)
 
@@ -771,11 +739,46 @@ class Widget(QWidget):
         self.ui.label_13.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.ui.label_13.setScaledContents(True)
 
-        self.ui.label_4.setPixmap(pixmapg1)
-        self.ui.label_19.setPixmap(pixmapg5)
-        self.ui.label_12.setPixmap(pixmapg9)
-        self.ui.label_5.setPixmap(pixmapg12)
-        self.ui.label_13.setPixmap(pixmapg15)
+        self.ui.label_4.setPixmap(self.pixmapg1)
+        self.ui.label_19.setPixmap(self.pixmapg5)
+        self.ui.label_12.setPixmap(self.pixmapg9)
+        self.ui.label_5.setPixmap(self.pixmapg12)
+        self.ui.label_13.setPixmap(self.pixmapg15)
+
+    def visualization(self):
+        self.stackedWidget.setCurrentIndex(5)
+        self.ui.label_35.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.ui.label_35.setScaledContents(True)
+        self.ui.label_35.setPixmap(self.pixmapg1)
+        sleep(1)
+        self.ui.label_35.setPixmap(self.pixmapg2)
+        sleep(1)
+        self.ui.label_35.setPixmap(self.pixmapg3)
+        sleep(1)
+        self.ui.label_35.setPixmap(self.pixmapg4)
+        sleep(1)
+        self.ui.label_35.setPixmap(self.pixmapg5)
+        sleep(1)
+        self.ui.label_35.setPixmap(self.pixmapg6)
+        sleep(1)
+        self.ui.label_35.setPixmap(self.pixmapg7)
+        sleep(1)
+        self.ui.label_35.setPixmap(self.pixmapg8)
+        sleep(1)
+        self.ui.label_35.setPixmap(self.pixmapg9)
+        sleep(1)
+        self.ui.label_35.setPixmap(self.pixmapg10)
+        sleep(1)
+        self.ui.label_35.setPixmap(self.pixmapg11)
+        sleep(1)
+        self.ui.label_35.setPixmap(self.pixmapg12)
+        sleep(1)
+        self.ui.label_35.setPixmap(self.pixmapg13)
+        sleep(1)
+        self.ui.label_35.setPixmap(self.pixmapg14)
+        sleep(1)
+        self.ui.label_35.setPixmap(self.pixmapg15)
+        sleep(1)
 
 # Widget initialization. 
 
@@ -783,5 +786,7 @@ if __name__ == "__main__":
     app = QApplication([])
     widget = Widget()
     widget.show()
+    sys.exit(app.exec())
+    widget.simDescription()
     sys.exit(app.exec())
     widget.simDescription()
