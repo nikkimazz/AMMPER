@@ -749,35 +749,50 @@ class Widget(QWidget):
         self.stackedWidget.setCurrentIndex(5)
         self.ui.label_35.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.ui.label_35.setScaledContents(True)
-        self.ui.label_35.setPixmap("/Results/" + self.resultsName + "/Plots/fig1.png")
+        path1 = "/Results/" + self.resultsName + "/Plots/fig1.png"
+        path2 = "/Results/" + self.resultsName + "/Plots/fig2.png"
+        path3 = "/Results/" + self.resultsName + "/Plots/fig3.png"
+        path4 = "/Results/" + self.resultsName + "/Plots/fig4.png"
+        path5 = "/Results/" + self.resultsName + "/Plots/fig5.png"
+        path6 = "/Results/" + self.resultsName + "/Plots/fig6.png"
+        path7 = "/Results/" + self.resultsName + "/Plots/fig7.png"
+        path8 = "/Results/" + self.resultsName + "/Plots/fig8.png"
+        path9 = "/Results/" + self.resultsName + "/Plots/fig9.png"
+        path10 = "/Results/" + self.resultsName + "/Plots/fig10.png"
+        path11 = "/Results/" + self.resultsName + "/Plots/fig11.png"
+        path12 = "/Results/" + self.resultsName + "/Plots/fig12.png"
+        path13 = "/Results/" + self.resultsName + "/Plots/fig13.png"
+        path14 = "/Results/" + self.resultsName + "/Plots/fig14.png"
+        path15 = "/Results/" + self.resultsName + "/Plots/fig15.png" 
+        self.ui.label_35.setPixmap(path1)
         sleep(1)
-        self.ui.label_35.setPixmap("/Results/" + self.resultsName + "/Plots/fig2.png")
+        self.ui.label_35.setPixmap(path2)
         sleep(1)
-        self.ui.label_35.setPixmap("/Results/" + self.resultsName + "/Plots/fig3.png")
+        self.ui.label_35.setPixmap(path3)
         sleep(1)
-        self.ui.label_35.setPixmap("/Results/" + self.resultsName + "/Plots/fig4.png")
+        self.ui.label_35.setPixmap(path4)
         sleep(1)
-        self.ui.label_35.setPixmap("/Results/" + self.resultsName + "/Plots/fig5.png")
+        self.ui.label_35.setPixmap(path5)
         sleep(1)
-        self.ui.label_35.setPixmap("/Results/" + self.resultsName + "/Plots/fig6.png")
+        self.ui.label_35.setPixmap(path6)
         sleep(1)
-        self.ui.label_35.setPixmap(("/Results/" + self.resultsName + "/Plots/fig7.png"))
+        self.ui.label_35.setPixmap(path7)
         sleep(1)
-        self.ui.label_35.setPixmap("/Results/" + self.resultsName + "/Plots/fig8.png")
+        self.ui.label_35.setPixmap(path8)
         sleep(1)
-        self.ui.label_35.setPixmap("/Results/" + self.resultsName + "/Plots/fig9.png")
+        self.ui.label_35.setPixmap(path9)
         sleep(1)
-        self.ui.label_35.setPixmap("/Results/" + self.resultsName + "/Plots/fig10.png")
+        self.ui.label_35.setPixmap(path10)
         sleep(1)
-        self.ui.label_35.setPixmap("/Results/" + self.resultsName + "/Plots/fig11.png")
+        self.ui.label_35.setPixmap(path11)
         sleep(1)
-        self.ui.label_35.setPixmap("/Results/" + self.resultsName + "/Plots/fig12.png")
+        self.ui.label_35.setPixmap(path12)
         sleep(1)
-        self.ui.label_35.setPixmap("/Results/" + self.resultsName + "/Plots/fig13.png")
+        self.ui.label_35.setPixmap(path13)
         sleep(1)
-        self.ui.label_35.setPixmap("/Results/" + self.resultsName + "/Plots/fig14.png")
+        self.ui.label_35.setPixmap(path14)
         sleep(1)
-        self.ui.label_35.setPixmap("/Results/" + self.resultsName + "/Plots/fig15.png")
+        self.ui.label_35.setPixmap(path15)
         sleep(1)
 
 # Widget initialization. 
