@@ -782,7 +782,7 @@ class Widget(QWidget):
         path13q = QPixmap(path13)
         path14q = QPixmap(path14)
         path15q = QPixmap(path15)
-        sleep(60)
+
         self.ui.label_35.setPixmap(path1q)
         sleep(1)
         self.ui.label_35.setPixmap(path2q)
