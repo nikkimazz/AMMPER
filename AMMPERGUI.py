@@ -664,66 +664,72 @@ class Widget(QWidget):
         sleep(1)
 
         #gen1
-        path1 = "Results/" + self.resultsName + "/Plots/fig1.png"
-        self.pixmapg1 = QPixmap(path1)
+        path1 = "/Results/" + self.resultsName + "/Plots/fig1.png"
+        pixmapg1 = QPixmap(path1)
 
         #gen2
         path2 = "/Results/" + self.resultsName + "/Plots/fig2.png"
-        self.pixmapg2 = QPixmap(path2)
+        pixmapg2 = QPixmap(path2)
 
         #gen3
         path3 = "/Results/" + self.resultsName + "/Plots/fig3.png"
-        self.pixmapg3 = QPixmap(path3)
+        pixmapg3 = QPixmap(path3)
         
         #gen4
         path4 = "/Results/" + self.resultsName + "/Plots/fig4.png"
-        self.pixmapg4 = QPixmap(path4)
+        pixmapg4 = QPixmap(path4)
 
         #gen5
         path5 = "/Results/" + self.resultsName + "/Plots/fig5.png"
-        self.pixmapg5 = QPixmap(path5)
+        pixmapg5 = QPixmap(path5)
 
         #gen6
-        path6 = "/Results/" + self.resultsName + "/Plots/fig6.png"
-        self.pixmapg6 = QPixmap(path6)
+        path6 = "Results/" + self.resultsName + "/Plots/fig6.png"
+        pixmapg6 = QPixmap(path6)
 
         #gen7
         path7 = "/Results/" + self.resultsName + "/Plots/fig7.png"
-        self.pixmapg7 = QPixmap(path7)
+        pixmapg7 = QPixmap(path7)
 
         #gen8
         path8 = "/Results/" + self.resultsName + "/Plots/fig8.png"
-        self.pixmapg8 = QPixmap(path8)
+        pixmapg8 = QPixmap(path8)
 
         #gen9
         path9 = "/Results/" + self.resultsName + "/Plots/fig9.png"
-        self.pixmapg9 = QPixmap(path9)
+        pixmapg9 = QPixmap(path9)
 
         #gen10
         path10 = "/Results/" + self.resultsName + "/Plots/fig10.png"
-        self.pixmapg10 = QPixmap(path10)
+        pixmapg10 = QPixmap(path10)
         
         #gen11
         path11 = "/Results/" + self.resultsName + "/Plots/fig11.png"
-        self.pixmapg11 = QPixmap(path11)
+        pixmapg11 = QPixmap(path11)
 
         #gen12
         path12 = "/Results/" + self.resultsName + "/Plots/fig12.png"
-        self.pixmapg12 = QPixmap(path12)
+        pixmapg12 = QPixmap(path12)
 
         #gen13
         path13 = "/Results/" + self.resultsName + "/Plots/fig13.png"
-        self.pixmapg13 = QPixmap(path13)
+        pixmapg13 = QPixmap(path13)
 
         #gen14
         path14 = "/Results/" + self.resultsName + "/Plots/fig14.png"
-        self.pixmapg14 = QPixmap(path14)
+        pixmapg14 = QPixmap(path14)
 
         #gen15
         path15 = "/Results/" + self.resultsName + "/Plots/fig15.png"
-        self.pixmapg15 = QPixmap(path15)
+        pixmapg15 = QPixmap(path15)
 
         self.stackedWidget.setCurrentIndex(3)
+
+        self.ui.label_4.setPixmap(pixmapg1)
+        self.ui.label_19.setPixmap(pixmapg5)
+        self.ui.label_12.setPixmap(pixmapg9)
+        self.ui.label_5.setPixmap(pixmapg12)
+        self.ui.label_13.setPixmap(pixmapg15)
 
         # Setting label properties
         self.ui.label_4.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -739,45 +745,39 @@ class Widget(QWidget):
         self.ui.label_13.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.ui.label_13.setScaledContents(True)
 
-        self.ui.label_4.setPixmap(self.pixmapg1)
-        self.ui.label_19.setPixmap(self.pixmapg5)
-        self.ui.label_12.setPixmap(self.pixmapg9)
-        self.ui.label_5.setPixmap(self.pixmapg12)
-        self.ui.label_13.setPixmap(self.pixmapg15)
-
     def visualization(self):
         self.stackedWidget.setCurrentIndex(5)
         self.ui.label_35.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.ui.label_35.setScaledContents(True)
-        self.ui.label_35.setPixmap(self.pixmapg1)
+        self.ui.label_35.setPixmap("/Results/" + self.resultsName + "/Plots/fig1.png")
         sleep(1)
-        self.ui.label_35.setPixmap(self.pixmapg2)
+        self.ui.label_35.setPixmap("/Results/" + self.resultsName + "/Plots/fig2.png")
         sleep(1)
-        self.ui.label_35.setPixmap(self.pixmapg3)
+        self.ui.label_35.setPixmap("/Results/" + self.resultsName + "/Plots/fig3.png")
         sleep(1)
-        self.ui.label_35.setPixmap(self.pixmapg4)
+        self.ui.label_35.setPixmap("/Results/" + self.resultsName + "/Plots/fig4.png")
         sleep(1)
-        self.ui.label_35.setPixmap(self.pixmapg5)
+        self.ui.label_35.setPixmap("/Results/" + self.resultsName + "/Plots/fig5.png")
         sleep(1)
-        self.ui.label_35.setPixmap(self.pixmapg6)
+        self.ui.label_35.setPixmap("/Results/" + self.resultsName + "/Plots/fig6.png")
         sleep(1)
-        self.ui.label_35.setPixmap(self.pixmapg7)
+        self.ui.label_35.setPixmap(("/Results/" + self.resultsName + "/Plots/fig7.png"))
         sleep(1)
-        self.ui.label_35.setPixmap(self.pixmapg8)
+        self.ui.label_35.setPixmap("/Results/" + self.resultsName + "/Plots/fig8.png")
         sleep(1)
-        self.ui.label_35.setPixmap(self.pixmapg9)
+        self.ui.label_35.setPixmap("/Results/" + self.resultsName + "/Plots/fig9.png")
         sleep(1)
-        self.ui.label_35.setPixmap(self.pixmapg10)
+        self.ui.label_35.setPixmap("/Results/" + self.resultsName + "/Plots/fig10.png")
         sleep(1)
-        self.ui.label_35.setPixmap(self.pixmapg11)
+        self.ui.label_35.setPixmap("/Results/" + self.resultsName + "/Plots/fig11.png")
         sleep(1)
-        self.ui.label_35.setPixmap(self.pixmapg12)
+        self.ui.label_35.setPixmap("/Results/" + self.resultsName + "/Plots/fig12.png")
         sleep(1)
-        self.ui.label_35.setPixmap(self.pixmapg13)
+        self.ui.label_35.setPixmap("/Results/" + self.resultsName + "/Plots/fig13.png")
         sleep(1)
-        self.ui.label_35.setPixmap(self.pixmapg14)
+        self.ui.label_35.setPixmap("/Results/" + self.resultsName + "/Plots/fig14.png")
         sleep(1)
-        self.ui.label_35.setPixmap(self.pixmapg15)
+        self.ui.label_35.setPixmap("/Results/" + self.resultsName + "/Plots/fig15.png")
         sleep(1)
 
 # Widget initialization. 
@@ -786,7 +786,5 @@ if __name__ == "__main__":
     app = QApplication([])
     widget = Widget()
     widget.show()
-    sys.exit(app.exec())
-    widget.simDescription()
     sys.exit(app.exec())
     widget.simDescription()
