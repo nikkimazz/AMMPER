@@ -324,6 +324,7 @@ class Widget(QWidget):
                     self.ROSData = genROSOld(self.radData, cells)
             
         if self.radType == "150 MeV Proton":
+            print("THIS IS RUNNING okay?")
             if g == self.radGen:
                 protonEnergy = 150
                 # these fluences are pre-calculated to deliver the dose to the volume of water
@@ -664,23 +665,23 @@ class Widget(QWidget):
         sleep(1)
 
         #gen1
-        path1 = "/Results/" + self.resultsName + "/Plots/fig1.png"
+        path1 = "Results/" + self.resultsName + "/Plots/fig1.png"
         pixmapg1 = QPixmap(path1)
 
         #gen2
-        path2 = "/Results/" + self.resultsName + "/Plots/fig2.png"
+        path2 = "Results/" + self.resultsName + "/Plots/fig2.png"
         pixmapg2 = QPixmap(path2)
 
         #gen3
-        path3 = "/Results/" + self.resultsName + "/Plots/fig3.png"
+        path3 = "Results/" + self.resultsName + "/Plots/fig3.png"
         pixmapg3 = QPixmap(path3)
         
         #gen4
-        path4 = "/Results/" + self.resultsName + "/Plots/fig4.png"
+        path4 = "Results/" + self.resultsName + "/Plots/fig4.png"
         pixmapg4 = QPixmap(path4)
 
         #gen5
-        path5 = "/Results/" + self.resultsName + "/Plots/fig5.png"
+        path5 = "Results/" + self.resultsName + "/Plots/fig5.png"
         pixmapg5 = QPixmap(path5)
 
         #gen6
@@ -688,39 +689,39 @@ class Widget(QWidget):
         pixmapg6 = QPixmap(path6)
 
         #gen7
-        path7 = "/Results/" + self.resultsName + "/Plots/fig7.png"
+        path7 = "Results/" + self.resultsName + "/Plots/fig7.png"
         pixmapg7 = QPixmap(path7)
 
         #gen8
-        path8 = "/Results/" + self.resultsName + "/Plots/fig8.png"
+        path8 = "Results/" + self.resultsName + "/Plots/fig8.png"
         pixmapg8 = QPixmap(path8)
 
         #gen9
-        path9 = "/Results/" + self.resultsName + "/Plots/fig9.png"
+        path9 = "Results/" + self.resultsName + "/Plots/fig9.png"
         pixmapg9 = QPixmap(path9)
 
         #gen10
-        path10 = "/Results/" + self.resultsName + "/Plots/fig10.png"
+        path10 = "Results/" + self.resultsName + "/Plots/fig10.png"
         pixmapg10 = QPixmap(path10)
         
         #gen11
-        path11 = "/Results/" + self.resultsName + "/Plots/fig11.png"
+        path11 = "Results/" + self.resultsName + "/Plots/fig11.png"
         pixmapg11 = QPixmap(path11)
 
         #gen12
-        path12 = "/Results/" + self.resultsName + "/Plots/fig12.png"
+        path12 = "Results/" + self.resultsName + "/Plots/fig12.png"
         pixmapg12 = QPixmap(path12)
 
         #gen13
-        path13 = "/Results/" + self.resultsName + "/Plots/fig13.png"
+        path13 = "Results/" + self.resultsName + "/Plots/fig13.png"
         pixmapg13 = QPixmap(path13)
 
         #gen14
-        path14 = "/Results/" + self.resultsName + "/Plots/fig14.png"
+        path14 = "Results/" + self.resultsName + "/Plots/fig14.png"
         pixmapg14 = QPixmap(path14)
 
         #gen15
-        path15 = "/Results/" + self.resultsName + "/Plots/fig15.png"
+        path15 = "Results/" + self.resultsName + "/Plots/fig15.png"
         pixmapg15 = QPixmap(path15)
 
         self.stackedWidget.setCurrentIndex(3)
@@ -749,21 +750,22 @@ class Widget(QWidget):
         self.stackedWidget.setCurrentIndex(5)
         self.ui.label_35.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.ui.label_35.setScaledContents(True)
-        path1 = "/Results/" + self.resultsName + "/Plots/fig1.png"
-        path2 = "/Results/" + self.resultsName + "/Plots/fig2.png"
-        path3 = "/Results/" + self.resultsName + "/Plots/fig3.png"
-        path4 = "/Results/" + self.resultsName + "/Plots/fig4.png"
-        path5 = "/Results/" + self.resultsName + "/Plots/fig5.png"
-        path6 = "/Results/" + self.resultsName + "/Plots/fig6.png"
-        path7 = "/Results/" + self.resultsName + "/Plots/fig7.png"
-        path8 = "/Results/" + self.resultsName + "/Plots/fig8.png"
-        path9 = "/Results/" + self.resultsName + "/Plots/fig9.png"
-        path10 = "/Results/" + self.resultsName + "/Plots/fig10.png"
-        path11 = "/Results/" + self.resultsName + "/Plots/fig11.png"
-        path12 = "/Results/" + self.resultsName + "/Plots/fig12.png"
-        path13 = "/Results/" + self.resultsName + "/Plots/fig13.png"
-        path14 = "/Results/" + self.resultsName + "/Plots/fig14.png"
-        path15 = "/Results/" + self.resultsName + "/Plots/fig15.png" 
+        self.ui.label_35.setScaledContents(True)
+        path1 = "Results/" + self.resultsName + "/Plots/fig1.png"
+        path2 = "Results/" + self.resultsName + "/Plots/fig2.png"
+        path3 = "Results/" + self.resultsName + "/Plots/fig3.png"
+        path4 = "Results/" + self.resultsName + "/Plots/fig4.png"
+        path5 = "Results/" + self.resultsName + "/Plots/fig5.png"
+        path6 = "Results/" + self.resultsName + "/Plots/fig6.png"
+        path7 = "Results/" + self.resultsName + "/Plots/fig7.png"
+        path8 = "Results/" + self.resultsName + "/Plots/fig8.png"
+        path9 = "Results/" + self.resultsName + "/Plots/fig9.png"
+        path10 = "Results/" + self.resultsName + "/Plots/fig10.png"
+        path11 = "Results/" + self.resultsName + "/Plots/fig11.png"
+        path12 = "Results/" + self.resultsName + "/Plots/fig12.png"
+        path13 = "Results/" + self.resultsName + "/Plots/fig13.png"
+        path14 = "Results/" + self.resultsName + "/Plots/fig14.png"
+        path15 = "Results/" + self.resultsName + "/Plots/fig15.png"
         path1q = QPixmap(path1)
         path2q = QPixmap(path2)
         path3q = QPixmap(path3)
@@ -779,7 +781,7 @@ class Widget(QWidget):
         path13q = QPixmap(path13)
         path14q = QPixmap(path14)
         path15q = QPixmap(path15)
-
+        #sleep(60)
         self.ui.label_35.setPixmap(path1q)
         sleep(1)
         self.ui.label_35.setPixmap(path2q)
