@@ -37,4 +37,4 @@ dependencies:
       - six==1.16.0
       - threadpoolctl==3.1.0
       - tzdata==2023.3
-prefix: C:\Users\alder\anaconda3\envs\ammperGUI
+prefix: C:\Users\alder\anaconda3\envs\ammperGUI #change this to reflect your own system path
