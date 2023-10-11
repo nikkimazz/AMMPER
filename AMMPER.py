@@ -153,7 +153,7 @@ for g in range(1,gen+1):
     if radType == "Gamma":
         if g == radGen:
             
-            dose = input("Please enter radiation dose. Options are: 0, 2.5, 5, 10, 20, 30 Gy.\n")
+            dose = input("Please enter radiation dose. \n")
             # radData = np.zeros([1, 6], dtype=float)
             # Dose input, radGenE stop point for gamma radiation.
             radData = GammaRadGen(dose)
