@@ -93,6 +93,8 @@ def AlamarblueMechanics(results,var, title):
     v = [V1_max * ( Blue_0 / (K1_M + Blue_0))]
     v2 = [V2_max * ( Pink_0 / (K2_M + Pink_0))]
 
+
+
     for i in range(len(t) - 1):
         vn = V1_max * ( Blue[i] / (K1_M + Blue[i])) # <- uptake concentration rate
 
@@ -365,12 +367,12 @@ TRUNCATED = 15
 GENCONVER = 198 # 198 min for ion conversion data  205.62 for gamma radation
 namesk = ['Time', 'A570', 'A600', 'A690', 'A750']
 
-    ##############
+##############
 data1 = pd.read_csv( main_directory + "\\AlamarblueRawdataWTKGy.csv",
                        names = namesk) # Average 0 Gy, use Average data instead of single data >>>>>>> <<<<<<<<<<<< Re run 4 rank tensor gridsearch
 
 data2 = pd.read_csv(main_directory + '\\AlamarblueRawdataWT25Gy.csv',
-                       names = namesk) # Average 0 Gy, use Average data instead of single data >>>>>>> <<<<<<<<<<<< Re run 4 rank tensor gridsearch
+                       names = namesk) # Average 0  Gy, use Average data instead of single data >>>>>>> <<<<<<<<<<<< Re run 4 rank tensor gridsearch
 
 data3 = pd.read_csv(main_directory + '\\AlamarblueRawdataWT30Gy.csv',
                        names = namesk) # Average 0 Gy, use Average data instead of single data >>>>>>> <<<<<<<<<<<< Re run 4 rank tensor gridsearch
