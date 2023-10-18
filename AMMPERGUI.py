@@ -17,6 +17,7 @@ from PyQt5.QtWidgets import QApplication, QWidget
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
 from vgui_form import Ui_Widget # AMMPER interface 
+from movieMaker import movie_maker as mm
 
 # AMMPER modules
 import numpy as np
@@ -666,72 +667,72 @@ class Widget(QWidget):
         sleep(1)
 
         #gen1
-        path1 = "Results/" + self.resultsName + "/Plots/fig1.png"
-        pixmapg1 = QPixmap(path1)
+        self.path1 = "Results/" + self.resultsName + "/Plots/fig1.png"
+        self.pixmapg1 = QPixmap(self.path1)
 
         #gen2
-        path2 = "Results/" + self.resultsName + "/Plots/fig2.png"
-        pixmapg2 = QPixmap(path2)
+        self.path2 = "Results/" + self.resultsName + "/Plots/fig2.png"
+        self.pixmapg2 = QPixmap(self.path2)
 
         #gen3
-        path3 = "Results/" + self.resultsName + "/Plots/fig3.png"
-        pixmapg3 = QPixmap(path3)
+        self.path3 = "Results/" + self.resultsName + "/Plots/fig3.png"
+        self.pixmapg3 = QPixmap(self.path3)
         
         #gen4
-        path4 = "Results/" + self.resultsName + "/Plots/fig4.png"
-        pixmapg4 = QPixmap(path4)
+        self.path4 = "Results/" + self.resultsName + "/Plots/fig4.png"
+        self.pixmapg4 = QPixmap(self.path4)
 
         #gen5
-        path5 = "Results/" + self.resultsName + "/Plots/fig5.png"
-        pixmapg5 = QPixmap(path5)
+        self.path5 = "Results/" + self.resultsName + "/Plots/fig5.png"
+        self.pixmapg5 = QPixmap(self.path5)
 
         #gen6
-        path6 = "Results/" + self.resultsName + "/Plots/fig6.png"
-        pixmapg6 = QPixmap(path6)
+        self.path6 = "Results/" + self.resultsName + "/Plots/fig6.png"
+        self.pixmapg6 = QPixmap(self.path6)
 
         #gen7
-        path7 = "Results/" + self.resultsName + "/Plots/fig7.png"
-        pixmapg7 = QPixmap(path7)
+        self.path7 = "Results/" + self.resultsName + "/Plots/fig7.png"
+        self.pixmapg7 = QPixmap(self.path7)
 
         #gen8
-        path8 = "Results/" + self.resultsName + "/Plots/fig8.png"
-        pixmapg8 = QPixmap(path8)
+        self.path8 = "Results/" + self.resultsName + "/Plots/fig8.png"
+        self.pixmapg8 = QPixmap(self.path8)
 
         #gen9
-        path9 = "Results/" + self.resultsName + "/Plots/fig9.png"
-        pixmapg9 = QPixmap(path9)
+        self.path9 = "Results/" + self.resultsName + "/Plots/fig9.png"
+        self.pixmapg9 = QPixmap(self.path9)
 
         #gen10
-        path10 = "Results/" + self.resultsName + "/Plots/fig10.png"
-        pixmapg10 = QPixmap(path10)
+        self.path10 = "Results/" + self.resultsName + "/Plots/fig10.png"
+        self.pixmapg10 = QPixmap(self.path10)
         
         #gen11
-        path11 = "Results/" + self.resultsName + "/Plots/fig11.png"
-        pixmapg11 = QPixmap(path11)
+        self.path11 = "Results/" + self.resultsName + "/Plots/fig11.png"
+        self.pixmapg11 = QPixmap(self.path11)
 
         #gen12
-        path12 = "Results/" + self.resultsName + "/Plots/fig12.png"
-        pixmapg12 = QPixmap(path12)
+        self.path12 = "Results/" + self.resultsName + "/Plots/fig12.png"
+        self.pixmapg12 = QPixmap(self.path12)
 
         #gen13
-        path13 = "Results/" + self.resultsName + "/Plots/fig13.png"
-        pixmapg13 = QPixmap(path13)
+        self.path13 = "Results/" + self.resultsName + "/Plots/fig13.png"
+        self.pixmapg13 = QPixmap(self.path13)
 
         #gen14
-        path14 = "Results/" + self.resultsName + "/Plots/fig14.png"
-        pixmapg14 = QPixmap(path14)
+        self.path14 = "Results/" + self.resultsName + "/Plots/fig14.png"
+        self.pixmapg14 = QPixmap(self.path14)
 
         #gen15
-        path15 = "Results/" + self.resultsName + "/Plots/fig15.png"
-        pixmapg15 = QPixmap(path15)
+        self.path15 = "Results/" + self.resultsName + "/Plots/fig15.png"
+        self.pixmapg15 = QPixmap(self.path15)
 
         self.stackedWidget.setCurrentIndex(3)
 
-        self.ui.label_4.setPixmap(pixmapg1)
-        self.ui.label_19.setPixmap(pixmapg5)
-        self.ui.label_12.setPixmap(pixmapg9)
-        self.ui.label_5.setPixmap(pixmapg12)
-        self.ui.label_13.setPixmap(pixmapg15)
+        self.ui.label_4.setPixmap(self.pixmapg1)
+        self.ui.label_19.setPixmap(self.pixmapg5)
+        self.ui.label_12.setPixmap(self.pixmapg9)
+        self.ui.label_5.setPixmap(self.pixmapg12)
+        self.ui.label_13.setPixmap(self.pixmapg15)
 
         # Setting label properties
         self.ui.label_4.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -752,66 +753,10 @@ class Widget(QWidget):
         self.ui.label_35.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.ui.label_35.setScaledContents(True)
         self.ui.label_35.setScaledContents(True)
-        path1 = "Results/" + self.resultsName + "/Plots/fig1.png"
-        path2 = "Results/" + self.resultsName + "/Plots/fig2.png"
-        path3 = "Results/" + self.resultsName + "/Plots/fig3.png"
-        path4 = "Results/" + self.resultsName + "/Plots/fig4.png"
-        path5 = "Results/" + self.resultsName + "/Plots/fig5.png"
-        path6 = "Results/" + self.resultsName + "/Plots/fig6.png"
-        path7 = "Results/" + self.resultsName + "/Plots/fig7.png"
-        path8 = "Results/" + self.resultsName + "/Plots/fig8.png"
-        path9 = "Results/" + self.resultsName + "/Plots/fig9.png"
-        path10 = "Results/" + self.resultsName + "/Plots/fig10.png"
-        path11 = "Results/" + self.resultsName + "/Plots/fig11.png"
-        path12 = "Results/" + self.resultsName + "/Plots/fig12.png"
-        path13 = "Results/" + self.resultsName + "/Plots/fig13.png"
-        path14 = "Results/" + self.resultsName + "/Plots/fig14.png"
-        path15 = "Results/" + self.resultsName + "/Plots/fig15.png"
-        path1q = QPixmap(path1)
-        path2q = QPixmap(path2)
-        path3q = QPixmap(path3)
-        path4q = QPixmap(path4)
-        path5q = QPixmap(path5)
-        path6q = QPixmap(path6)
-        path7q = QPixmap(path7)
-        path8q = QPixmap(path8)
-        path9q = QPixmap(path9)
-        path10q = QPixmap(path10)
-        path11q = QPixmap(path11)
-        path12q = QPixmap(path12)
-        path13q = QPixmap(path13)
-        path14q = QPixmap(path14)
-        path15q = QPixmap(path15)
-
-        self.ui.label_35.setPixmap(path1q)
-        sleep(1)
-        self.ui.label_35.setPixmap(path2q)
-        sleep(1)
-        self.ui.label_35.setPixmap(path3q)
-        sleep(1)
-        self.ui.label_35.setPixmap(path4q)
-        sleep(1)
-        self.ui.label_35.setPixmap(path5q)
-        sleep(1)
-        self.ui.label_35.setPixmap(path6q)
-        sleep(1)
-        self.ui.label_35.setPixmap(path7q)
-        sleep(1)
-        self.ui.label_35.setPixmap(path8q)
-        sleep(1)
-        self.ui.label_35.setPixmap(path9q)
-        sleep(1)
-        self.ui.label_35.setPixmap(path10q)
-        sleep(1)
-        self.ui.label_35.setPixmap(path11q)
-        sleep(1)
-        self.ui.label_35.setPixmap(path12q)
-        sleep(1)
-        self.ui.label_35.setPixmap(path13q)
-        sleep(1)
-        self.ui.label_35.setPixmap(path14q)
-        sleep(1)
-        self.ui.label_35.setPixmap(path15q)
+        mm.movieMaker("Results/", self.path1, self.path2, self.path3, self.path4, self.path5, self.path6, self.path7, self.path8, self.path9, self.path10, self.path11, self.path12, self.path13, self.path14, self.path15)
+        videopath = QPixmap("Results/visualization.mp4")
+        self.ui.label_35.setPixmap(videopath)
+       
 
 # Widget initialization. 
 
