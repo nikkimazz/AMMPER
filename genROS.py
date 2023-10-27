@@ -125,9 +125,11 @@ def genROS(radData, cells):
     # primary yields in [molecules/100 eV]
     G_H2O2 = 0.7
     G_OH = 2.5
-    cellHit = 0  # boolean for whether or not cell is hit
-    ROSData = np.zeros([1,6])
+
+    ROSData = np.empty((0,6))
+    # all_data = []
     for i in range(n):
+        cellHit = 0  # boolean for whether or not cell is hit
         radPos = [radData[i, 0], radData[i, 1], radData[i, 2]]
         energy = radData[i, 3]
         yield_H2O2 = G_H2O2 * energy
@@ -143,11 +145,14 @@ def genROS(radData, cells):
                 if radPos[1] <= currPos[1] + 2 and radPos[1] >= currPos[1] - 2:
                     if radPos[2] <= currPos[2] + 2 and radPos[2] >= currPos[2] - 2:
                         cellHit = 1
+                        # print("cell was hit!")
+                        # print(cellHit)
 
         # Keep initial results for now, can be deleted later
 
-        #ROSDataEntry = [radPos[0], radPos[1], radPos[2], yield_H2O2, yield_OH, cellHit]
+        #ROSDataEntry = [radPos[0], radPos[1], radPos[2], yield_H2O2, yield_OH , cellHit]
         ROSDataEntry = [radPos[0], radPos[1], radPos[2], 0, yield_OH, cellHit]
+
         #ROSDataEntry = ROSDataEntry.reshape((1,6))
 
         # OH data entry::::
@@ -191,9 +196,9 @@ def genROS(radData, cells):
         # Need to fix dimensions >> ><<< >>> <<< >>> <<<
         ROSDiffusionEntry = np.vstack([Px, Py, Pz, C_H2O2, cellHit, cellHit]).T
         #
-        ROSData = np.vstack([ROSData, ROSDataEntry])
-        #
-        ROSData = np.vstack([ROSData, ROSDiffusionEntry])
+        # ROSData = np.vstack([ROSData, ROSDataEntry])
+        # #
+        # ROSData = np.vstack([ROSData, ROSDiffusionEntry])
 
         # ROSDiffusionEntry = np.vstack([Px, Py, Pz, C_H2O2, cellHit, cellHit]).T
         #
@@ -201,8 +206,29 @@ def genROS(radData, cells):
         #
         # ROSData = np.concatenate((ROSData, ROSDiffusionEntry), axis = 0)
 
+        # # Append ROSDataEntry to the all_data list
+        # all_data.append(ROSDataEntry)
+        #
+        # # Extend the all_data list with ROSDiffusionEntry (because it's Nx6)
+        # all_data.extend(ROSDiffusionEntry.tolist())  # Convert array to list for extending
+
+        # Ensuring the shapes
+        # ROSData = ROSData.reshape(1, 6)
+        ROSDataEntry = np.array(ROSDataEntry).reshape(1, 6)
+
+
+        # Stacking
+        current_stack = np.vstack((ROSDataEntry, ROSDiffusionEntry))
+
+        # Updating
+        ROSData = np.vstack((ROSData, current_stack))
+
+
     # remove placeholder
-    ROSData = np.delete(ROSData, (0), axis=0)
+    # ROSData = np.delete(ROSData, (0), axis=0)
+
+    # Convert the collected data into an array
+    # ROSData = np.array(all_data)
 
     return (ROSData)
     # ROS DATA OUTPUT FORMAT >>> <<< >>> [Posx, Posy, Posz, C_H2O2, C_OH, cellHit]
