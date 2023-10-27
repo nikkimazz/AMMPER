@@ -161,40 +161,57 @@ class Widget(QWidget):
             self.sliderOn = True
             self.Gy = float(self.radAmount)
             self.radType = "150 MeV Proton"
+            self.horizontalSlider.setEnabled(self.sliderOn)
             self.gen = 15
             self.radGen = 2
             self.N = 64
+
             if self.Gy == 0:
                 self.radData = np.zeros([1,6],dtype = float)
                 self.ROSData = np.zeros([1,6],dtype = float)
-        elif self.radioButton_2.isChecked():
+
+        if self.radioButton_2.isChecked():
             self.sliderOn = False
             self.radType = "GCRSim"
+            self.horizontalSlider.setValue(1)
+            self.ui.label_11.setText(str(0.5))
+            self.horizontalSlider.setEnabled(self.sliderOn)
             self.gen = 15
             self.radGen = 2
             self.N = 64
             self.radData = np.zeros([1,6],dtype = float)
             self.ROSData = np.zeros([1,6],dtype = float)
-        elif self.radioButton_3.isChecked():
+
+        if self.radioButton_3.isChecked():
             self.sliderOn = False
             self.radType = "Deep Space"
+            self.horizontalSlider.setValue(1)
+            self.radAmount = 0
+            self.ui.label_11.setText(str(0))
+            self.horizontalSlider.setEnabled(self.sliderOn)
             self.gen = 15
             self.N = 300
             self.radGen = 0
             self.Gy = 0
             self.radData = np.zeros([1,6],dtype = float)
             self.ROSData = np.zeros([1,6],dtype = float)
-        elif self.radioButton_4.isChecked():
+
+        if self.radioButton_4.isChecked():
             self.sliderOn = False
             self.radType = "Gamma"
+            self.horizontalSlider.setValue(1)
+            self.ui.label_11.setText(str(0))
+            self.horizontalSlider.setEnabled(self.sliderOn)
             self.gen = 15
             self.radGen = 10
             self.N = 64
             self.radData = np.zeros([1,6],dtype = float)
             self.ROSData = np.zeros([1,6],dtype = float)
 
+        print(self.radType, self.sliderOn)
+
     def Slider(self):
-        if self.sliderOn == True:
+        if self.sliderOn:
             self.slider = self.horizontalSlider.value()
             if self.slider == 1:
                 self.radAmount = 0
@@ -208,8 +225,13 @@ class Widget(QWidget):
                 self.radAmount = 20
             elif self.slider == 6:
                 self.radAmount = 30
-        elif self.sliderOn == False:
-            self.horizontalSlider.setEnabled(False)
+        else:
+            if self.radType == "GCRSim":
+                self.radAmount = 0.5
+
+            if self.radType == "Deep Space" or self.radType == "Gamma":
+                self.radAmount = 0
+
         self.Gy = float(self.radAmount)
         self.ui.label_11.setText(str(self.radAmount))
 
