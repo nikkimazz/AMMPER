@@ -107,23 +107,38 @@ def AlamarblueMechanics(results,var, title):
 
         v = np.append(v, vn)
 
-        v2n = V2_max * (Pink[i] / (K2_M + Pink[i]))
+        #v2n = V2_max * (Pink[i] / (K2_M + Pink[i]))
 
         ################ Same for v2n
-        v2n = v2n * Growth_curve[i] + k * v2n * Growth_curve2[i]
+
         ########
-        v2 = np.append(v2, v2n)
+        #v2 = np.append(v2, v2n)
 
+        #dClear = v2n * dt
+
+        #Clearn = Clear[i] + dClear
+
+        #Clear = np.append(Clear, Clearn)
+
+        #dPink = -dClear
+
+        #Pinknn = Pinkn + dPink
+
+        #Pink = np.append(Pink, Pinknn)
+
+        alpha = Pink[i] / K2_M
+        #pi = Clear[i] / K3_M
+        pi = 0
+        V3_max = 0
+        v2n = ((V2_max * alpha) - (V3_max * pi)) / (1 + alpha + pi)
+        v2n = v2n * Growth_curve[i] + k * v2n * Growth_curve2[i]
+
+        dPink = v2n * dt
         dClear = v2n * dt
-
         Clearn = Clear[i] + dClear
-
         Clear = np.append(Clear, Clearn)
-
-        dPink = -dClear
-
-        Pinknn = Pinkn + dPink
-
+        # dPink = -dClear
+        Pinknn = Pinkn - dPink
         Pink = np.append(Pink, Pinknn)
 
     # Visualize total current concentration
