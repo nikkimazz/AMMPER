@@ -79,9 +79,13 @@ def AlamarblueMechanics(results,var, title):
 
     V1_max = var[0]
     V2_max = var[1]
+
     K1_M = var[2]
     K2_M = var[3]
+
     k = var[4]
+    V3_max = var[5]
+    K3_M = var[6]
     v = [V1_max * ( Blue_0 / (K1_M + Blue_0))]
     v2 = [V2_max * ( Pink_0 / (K2_M + Pink_0))]
 
@@ -127,9 +131,8 @@ def AlamarblueMechanics(results,var, title):
         #Pink = np.append(Pink, Pinknn)
 
         alpha = Pink[i] / K2_M
-        #pi = Clear[i] / K3_M
-        pi = 0
-        V3_max = 0
+        pi = Clear[i] / K3_M
+
         v2n = ((V2_max * alpha) - (V3_max * pi)) / (1 + alpha + pi)
         v2n = v2n * Growth_curve[i] + k * v2n * Growth_curve2[i]
 
@@ -197,7 +200,7 @@ def main_DP(name, data1, data1_std):
         if len(files) > 1:
             namess = ["Generation", "x", "y", "z", "Health"]
             resultsi = pd.read_csv(os.path.join(root, files[0]), names=namess)
-            Bi, Pi, t = AlamarblueMechanics(resultsi, [0.75, 1.65, 500, 8000, 1 / 2], 'k')
+            Bi, Pi, t = AlamarblueMechanics(resultsi, [0.75, 1.65, 500, 8000, 1 / 2, 0, 1000000], 'k')
             B_m.append(Bi)
             P_m.append(Pi)
 
