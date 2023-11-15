@@ -4,6 +4,7 @@ Created on
 @author: Daniel Palacios
 """
 
+import time
 import numpy as np
 import os
 import numpy as np
@@ -16,7 +17,11 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from scipy.optimize import curve_fit
 from scipy.interpolate import interp1d
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, mean_squared_error
+
+from ConfigSpace import Configuration, ConfigurationSpace, Float, Integer
+from smac import HyperparameterOptimizationFacade, Scenario
+
 
 
 def AlamarblueMechanics(results,var, title):
