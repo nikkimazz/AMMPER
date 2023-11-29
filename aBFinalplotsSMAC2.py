@@ -189,10 +189,13 @@ def main_DP(name, data1, data1_std):
             resultsi = pd.read_csv(os.path.join(root, files[0]), names= namess)
 
             ################## DEFAULT PARAMETERS
-            #Bi, Pi, t = AlamarblueMechanics(resultsi, [0.75, 1.65, 0, 500, 8000, 1000000, 1/2], 'k')
+            # Bi, Pi, t = AlamarblueMechanics(resultsi, [0.75, 1.65, 0, 500, 8000, 1000000, 1/2], 'k')
 
             ### Testing
-            Bi, Pi, t = AlamarblueMechanics(resultsi, [0.9418799810768097, 1.7714680707739503, 0.1977339123715871, 419, 6787, 571195, 0.5], 'k')
+            # Bi, Pi, t = AlamarblueMechanics(resultsi, [0.9418799810768097, 1.7714680707739503, 0.1977339123715871, 419, 6787, 571195, 0.5], 'k')
+
+            # Bi, Pi, t = AlamarblueMechanics(resultsi, [0.7999999382239151, 1.7199999894833444, 2.201108273450451e-06, 300, 6227, 999998, 0.5], 'k')
+            Bi, Pi, t = AlamarblueMechanics(resultsi, [0.7799990799515666, 1.679928455577914, 0.10002078747628415, 450, 6601, 9994, 0.5], 'k')
 
             B_m.append(Bi)
             P_m.append(Pi)
@@ -212,8 +215,10 @@ def main_DP(name, data1, data1_std):
 
     ##### B1, P1 = average(Bi), Pi, Bistd, Pistd
 
-    print('Accuracies:')
-    print(accuracy_ML(B_Ci[:8], B1[:8], P_Ci[:8], P1[:8]))
+    loss_per_trial = []
+    accuracy = accuracy_ML(B_Ci[:8], B1[:8], P_Ci[:8], P1[:8])
+    loss_per_trial.append(accuracy)
+    print(f'Accuracies: {accuracy}') 
 
     colorb = '#42329a'
     colorp = '#e54da7'
@@ -350,6 +355,20 @@ def interpolate_data(B_m, P_m, data1, data1_std, resultsi):
 
     return B_Ci, B1, P_Ci, P1, std_B, std_P, data1p, data1n
 
+def plot_loss(iteration_values, loss_values):
+    plt.plot(iteration_values, loss_values, marker='o', linestyle='-', color='b', label='Loss vs. Iteration')
+
+    # Adding labels and title
+    plt.xlabel('Iteration')
+    plt.ylabel('Loss')
+    plt.title('Loss vs. Iteration Plot')
+
+    # Adding a legend
+    plt.legend()
+
+    # Display the plot
+    plt.show()
+
 if __name__ == "__main__":
     TRUNCATED = 15
     GENCONVER = 198 # 198 min for ion conversion data  205.62 for gamma radation
@@ -357,16 +376,18 @@ if __name__ == "__main__":
     optimize_parameters = input("Would you like to optimize? [Y/N]: ")
     if optimize_parameters.capitalize() == "Y":
         num_trials = int(input("How many trials?: "))
+        iteration_values = []
+        cost_per_trial = []
         class MichealistMenten:
             @property
             def configspace(self) -> ConfigurationSpace:
                 cs = ConfigurationSpace(seed=0)
-                V1_max = Float("V1_max", (0.5, 1.0), default=0.75)
-                V2_max = Float("V2_max", (1.0, 2.0), default=1.65)
-                V3_max = Float("V3_max", (0.0, 0.5), default=0.0)
-                K1_M = Integer("K1_M", (300, 800), default=500)
-                K2_M = Integer("K2_M", (5000, 10000) , default=8000)
-                K3_M = Integer("K3_M", (100000, 1000000), default=1000000)
+                V1_max = Float("V1_max", (0.75, 0.78), default=0.7799980187037989)
+                V2_max = Float("V2_max", (1.65, 1.68), default=1.679895485410118)
+                V3_max = Float("V3_max", (0.1, 1.2), default=0.3)
+                K1_M = Integer("K1_M", (450, 500), default=450)
+                K2_M = Integer("K2_M", (6600, 6750) , default=6712)
+                K3_M = Integer("K3_M", (100, 10000), default=5000)
                 cs.add_hyperparameters([V1_max, V2_max, V3_max, K1_M, K2_M, K3_M])
 
                 return cs
@@ -395,37 +416,43 @@ if __name__ == "__main__":
         
         # Hyperparameter Optimization using SMAC3
         MM = MichealistMenten()
+        for trials in range(1, num_trials, 50):
+            iteration_values.append(trials)
+            start_time = time.time()
 
-        start_time = time.time()
+            # Note: Check if a minimum error threshold is reached and stop optimization
+            scenario = Scenario(
+                MM.configspace,
+                n_trials=trials,
+            )
 
-        # Note: Check if a minimum error threshold is reached and stop optimization
-        scenario = Scenario(
-            MM.configspace,
-            n_trials=num_trials,
-        )
+            initial_design = HyperparameterOptimizationFacade.get_initial_design(scenario, n_configs=5)
 
-        initial_design = HyperparameterOptimizationFacade.get_initial_design(scenario, n_configs=5)
+            smac = HyperparameterOptimizationFacade(
+                scenario,
+                MM.train,
+                initial_design=initial_design,
+                overwrite=True,
+            )
 
-        smac = HyperparameterOptimizationFacade(
-            scenario,
-            MM.train,
-            initial_design=initial_design,
-            overwrite=True,
-        )
+            incumbent = smac.optimize()
 
-        incumbent = smac.optimize()
+            end_time = time.time()
+            elapsed_time = end_time - start_time
+            print(f"Elapsed time: {elapsed_time} seconds")
+            
+            # Get cost of default configuration
+            default_cost = smac.validate(MM.configspace.get_default_configuration())
+            print(f"Default cost: {default_cost}")
 
-        end_time = time.time()
-        elapsed_time = end_time - start_time
-        print(f"Elapsed time: {elapsed_time} seconds")
+            # Let's calculate the cost of the incumbent
+            incumbent_cost = smac.validate(incumbent)
+            print(f"Incumbent cost: {incumbent_cost}")
+
+            cost_per_trial.append(incumbent_cost)
+
+        plot_loss(iteration_values, cost_per_trial)
         
-        # Get cost of default configuration
-        default_cost = smac.validate(MM.configspace.get_default_configuration())
-        print(f"Default cost: {default_cost}")
-
-        # Let's calculate the cost of the incumbent
-        incumbent_cost = smac.validate(incumbent)
-        print(f"Incumbent cost: {incumbent_cost}")
     else:
         TRUNCATED = 15
         GENCONVER = 198 # 198 min for ion conversion data  205.62 for gamma radation
@@ -434,23 +461,23 @@ if __name__ == "__main__":
 
         # Now rad51
 
-        datar = pd.read_csv(r"abFinalPlots\AlamarblueRawdatarad51KGy.csv", names = namesk)
-        datarSTD = pd.read_csv(r"abFinalPlots\AlamarblueRawdatarad51KGySTD.csv", names = namesk)
+        datar = pd.read_csv(r"abFinalPlots/AlamarblueRawdatarad51KGy.csv", names = namesk)
+        datarSTD = pd.read_csv(r"abFinalPlots/AlamarblueRawdatarad51KGySTD.csv", names = namesk)
 
-        datar2 = pd.read_csv(r"abFinalPlots\AlamarblueRawdatarad5125Gy.csv", names = namesk)
-        datarSTD2 = pd.read_csv(r"abFinalPlots\AlamarblueRawdatarad5125GySTD.csv", names = namesk)
+        datar2 = pd.read_csv(r"abFinalPlots/AlamarblueRawdatarad5125Gy.csv", names = namesk)
+        datarSTD2 = pd.read_csv(r"abFinalPlots/AlamarblueRawdatarad5125GySTD.csv", names = namesk)
 
-        datar3 = pd.read_csv(r"abFinalPlots\AlamarblueRawdatarad515Gy.csv", names = namesk)
-        datarSTD3 = pd.read_csv(r"abFinalPlots\AlamarblueRawdatarad515GySTD.csv", names = namesk)
+        datar3 = pd.read_csv(r"abFinalPlots/AlamarblueRawdatarad515Gy.csv", names = namesk)
+        datarSTD3 = pd.read_csv(r"abFinalPlots/AlamarblueRawdatarad515GySTD.csv", names = namesk)
 
-        datar5 = pd.read_csv(r"abFinalPlots\AlamarblueRawdatarad5110Gy.csv", names = namesk)
-        datarSTD5 = pd.read_csv(r"abFinalPlots\AlamarblueRawdatarad5110GySTD.csv", names = namesk)
+        datar5 = pd.read_csv(r"abFinalPlots/AlamarblueRawdatarad5110Gy.csv", names = namesk)
+        datarSTD5 = pd.read_csv(r"abFinalPlots/AlamarblueRawdatarad5110GySTD.csv", names = namesk)
 
-        datar6 = pd.read_csv(r"abFinalPlots\AlamarblueRawdatarad5120Gy.csv", names = namesk)
-        datarSTD6 = pd.read_csv(r"abFinalPlots\AlamarblueRawdatarad5120GySTD.csv", names = namesk)
+        datar6 = pd.read_csv(r"abFinalPlots/AlamarblueRawdatarad5120Gy.csv", names = namesk)
+        datarSTD6 = pd.read_csv(r"abFinalPlots/AlamarblueRawdatarad5120GySTD.csv", names = namesk)
 
-        datar7 = pd.read_csv(r"abFinalPlots\AlamarblueRawdatarad5130Gy.csv", names = namesk)
-        datarSTD7 = pd.read_csv(r"abFinalPlots\AlamarblueRawdatarad5130GySTD.csv", names = namesk)
+        datar7 = pd.read_csv(r"abFinalPlots/AlamarblueRawdatarad5130Gy.csv", names = namesk)
+        datarSTD7 = pd.read_csv(r"abFinalPlots/AlamarblueRawdatarad5130GySTD.csv", names = namesk)
 
         # Create a directory named 'figures' if it doesn't exist
         if not os.path.exists('figures'):
@@ -482,23 +509,23 @@ if __name__ == "__main__":
 
 
         # Now WT
-        dataw = pd.read_csv(r"C:\Users\danie\Desktop\Daniel_Master_Directory\AMMPERunofficial\abFinalPlots\AlamarblueRawdataWTKGy.csv", names = namesk)
-        datawSTD = pd.read_csv(r"C:\Users\danie\Desktop\Daniel_Master_Directory\AMMPERunofficial\abFinalPlots\AlamarblueRawdataWTKGySTD.csv", names = namesk)
+        dataw = pd.read_csv(r"abFinalPlots/AlamarblueRawdataWTKGy.csv", names = namesk)
+        datawSTD = pd.read_csv(r"abFinalPlots/AlamarblueRawdataWTKGySTD.csv", names = namesk)
 
-        dataw2 = pd.read_csv(r"C:\Users\danie\Desktop\Daniel_Master_Directory\AMMPERunofficial\abFinalPlots\AlamarblueRawdataWT25Gy.csv", names = namesk)
-        datawSTD2 = pd.read_csv(r"C:\Users\danie\Desktop\Daniel_Master_Directory\AMMPERunofficial\abFinalPlots\AlamarblueRawdataWT25GySTD.csv", names = namesk)
+        dataw2 = pd.read_csv(r"abFinalPlots/AlamarblueRawdataWT25Gy.csv", names = namesk)
+        datawSTD2 = pd.read_csv(r"abFinalPlots/AlamarblueRawdataWT25GySTD.csv", names = namesk)
 
-        dataw3 = pd.read_csv(r"C:\Users\danie\Desktop\Daniel_Master_Directory\AMMPERunofficial\abFinalPlots\AlamarblueRawdataWT10Gy.csv", names = namesk)
-        datawSTD3 = pd.read_csv(r"C:\Users\danie\Desktop\Daniel_Master_Directory\AMMPERunofficial\abFinalPlots\AlamarblueRawdataWT10GySTD.csv", names = namesk)
+        dataw3 = pd.read_csv(r"abFinalPlots/AlamarblueRawdataWT10Gy.csv", names = namesk)
+        datawSTD3 = pd.read_csv(r"abFinalPlots/AlamarblueRawdataWT10GySTD.csv", names = namesk)
 
-        dataw4 = pd.read_csv(r"C:\Users\danie\Desktop\Daniel_Master_Directory\AMMPERunofficial\abFinalPlots\AlamarblueRawdataWT5Gy.csv", names = namesk)
-        datawSTD4 = pd.read_csv(r"C:\Users\danie\Desktop\Daniel_Master_Directory\AMMPERunofficial\abFinalPlots\AlamarblueRawdataWT5GySTD.csv", names = namesk)
+        dataw4 = pd.read_csv(r"abFinalPlots/AlamarblueRawdataWT5Gy.csv", names = namesk)
+        datawSTD4 = pd.read_csv(r"abFinalPlots/AlamarblueRawdataWT5GySTD.csv", names = namesk)
 
-        dataw5 = pd.read_csv(r"C:\Users\danie\Desktop\Daniel_Master_Directory\AMMPERunofficial\abFinalPlots\AlamarblueRawdataWT20Gy.csv", names = namesk)
-        datawSTD5 = pd.read_csv(r"C:\Users\danie\Desktop\Daniel_Master_Directory\AMMPERunofficial\abFinalPlots\AlamarblueRawdataWT20GySTD.csv", names = namesk)
+        dataw5 = pd.read_csv(r"abFinalPlots/AlamarblueRawdataWT20Gy.csv", names = namesk)
+        datawSTD5 = pd.read_csv(r"abFinalPlots/AlamarblueRawdataWT20GySTD.csv", names = namesk)
 
-        dataw6 = pd.read_csv(r"C:\Users\danie\Desktop\Daniel_Master_Directory\AMMPERunofficial\abFinalPlots\AlamarblueRawdataWT30Gy.csv", names = namesk)
-        datawSTD6 = pd.read_csv(r"C:\Users\danie\Desktop\Daniel_Master_Directory\AMMPERunofficial\abFinalPlots\AlamarblueRawdataWT30GySTD.csv", names = namesk)
+        dataw6 = pd.read_csv(r"abFinalPlots/AlamarblueRawdataWT30Gy.csv", names = namesk)
+        datawSTD6 = pd.read_csv(r"abFinalPlots/AlamarblueRawdataWT30GySTD.csv", names = namesk)
 
 
         plt.figure(7)
