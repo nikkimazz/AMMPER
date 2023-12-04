@@ -170,9 +170,10 @@ def ExperimentalConencentrations(data):
     return B_C, P_C, Time
 
 def accuracy_ML(Experimental_B, Predicted_B, Experimental_P, Predicted_P):
-    delta = sum((Experimental_B - Predicted_B) ** 2)
-    delta1 = sum((Experimental_P - Predicted_P) ** 2)
-    delta = delta + delta1
+    delta = sum((Experimental_B - Predicted_B) ** 2) # error blue
+    delta1 = sum((Experimental_P - Predicted_P) ** 2) # error pink
+    # delta2 = w * |delta - delta1| ** n difference between the two regularization term, look regularization terms in ML
+    delta = delta + delta1 # + delta2
     # accuracy = classification_report(Experimental_B,Predicted_B).precision
     accuracy = delta
         
@@ -427,7 +428,8 @@ if __name__ == "__main__":
         incumbent_cost = smac.validate(incumbent)
         print(f"Incumbent cost: {incumbent_cost}")
     else:
-        TRUNCATED = 15
+        # Start value truncation = 0 for WT, but rad51 not zero
+        TRUNCATED = 15 # end value
         GENCONVER = 198 # 198 min for ion conversion data  205.62 for gamma radation
         namesk = ['Time', 'A570', 'A600', 'A690', 'A750']
 
@@ -524,3 +526,11 @@ if __name__ == "__main__":
         plt.figure(12)
         main_DP("WT_Basic_300", dataw6, datawSTD6)
         plt.savefig('figures/WT_Basic_300.png')
+
+
+
+        # Repeat errors vs n_trails for new evaluation function with regularization term
+        #    6-parameter model reversible model (increase range of individual parameters)
+        # Plot the rest of the figures
+        # Find new time range for rad 51
+        # Explore how k changes with rad51 different doses. How much damaged cells contribute to aB conversion?
