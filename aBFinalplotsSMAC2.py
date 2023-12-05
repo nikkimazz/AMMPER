@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from scipy.optimize import curve_fit
 from scipy.interpolate import interp1d
-from sklearn.metrics import accuracy_score, mean_squared_error
+from sklearn.metrics import accuracy_score, mean_squared_error, classification_report, precision_score
 
 from ConfigSpace import Configuration, ConfigurationSpace, Float, Integer
 from smac import HyperparameterOptimizationFacade, Scenario
@@ -170,14 +170,15 @@ def ExperimentalConencentrations(data):
     return B_C, P_C, Time
 
 def accuracy_ML(Experimental_B, Predicted_B, Experimental_P, Predicted_P):
-    delta = sum((Experimental_B - Predicted_B) ** 2) # error blue
-    delta1 = sum((Experimental_P - Predicted_P) ** 2) # error pink
+    w, n = 2, 2
+    delta_blue = sum((Experimental_B - Predicted_B) ** 2)
+    delta_pink = sum((Experimental_P - Predicted_P) ** 2)
+    delta_diff = w * abs(delta_blue - delta_pink) ** n
     # delta2 = w * |delta - delta1| ** n difference between the two regularization term, look regularization terms in ML
-    delta = delta + delta1 # + delta2
+    delta_total = delta_blue + delta_pink + delta_diff
     # accuracy = classification_report(Experimental_B,Predicted_B).precision
-    accuracy = delta
         
-    return accuracy
+    return delta_total
 
 def main_DP(name, data1, data1_std):
 
@@ -195,8 +196,10 @@ def main_DP(name, data1, data1_std):
             ### Testing
             # Bi, Pi, t = AlamarblueMechanics(resultsi, [0.9418799810768097, 1.7714680707739503, 0.1977339123715871, 419, 6787, 571195, 0.5], 'k')
 
-            # Bi, Pi, t = AlamarblueMechanics(resultsi, [0.7999999382239151, 1.7199999894833444, 2.201108273450451e-06, 300, 6227, 999998, 0.5], 'k')
-            Bi, Pi, t = AlamarblueMechanics(resultsi, [0.7799990799515666, 1.679928455577914, 0.10002078747628415, 450, 6601, 9994, 0.5], 'k')
+            # Bi, Pi, t = AlamarblueMechanics(resultsi, [0.7799990799515666, 1.679928455577914, 0.10002078747628415, 450, 6601, 9994, 0.5], 'k')
+
+            Bi, Pi, t = AlamarblueMechanics(resultsi, [0.9997875025037495, 0.8092700826448992, 0.7249542604694886, 574, 662, 9934, 0.5], 'k')
+            
 
             B_m.append(Bi)
             P_m.append(Pi)
@@ -383,11 +386,11 @@ if __name__ == "__main__":
             @property
             def configspace(self) -> ConfigurationSpace:
                 cs = ConfigurationSpace(seed=0)
-                V1_max = Float("V1_max", (0.75, 0.78), default=0.7799980187037989)
-                V2_max = Float("V2_max", (1.65, 1.68), default=1.679895485410118)
+                V1_max = Float("V1_max", (0.1, 2), default=0.7799980187037989)
+                V2_max = Float("V2_max", (0.1, 2), default=1.679895485410118)
                 V3_max = Float("V3_max", (0.1, 1.2), default=0.3)
-                K1_M = Integer("K1_M", (450, 500), default=450)
-                K2_M = Integer("K2_M", (6600, 6750) , default=6712)
+                K1_M = Integer("K1_M", (1, 1000), default=450)
+                K2_M = Integer("K2_M", (1, 10000) , default=6712)
                 K3_M = Integer("K3_M", (100, 10000), default=5000)
                 cs.add_hyperparameters([V1_max, V2_max, V3_max, K1_M, K2_M, K3_M])
 
@@ -553,7 +556,7 @@ if __name__ == "__main__":
         plt.figure(12)
         main_DP("WT_Basic_300", dataw6, datawSTD6)
         plt.savefig('figures/WT_Basic_300.png')
-
+        plt.show()
 
 
         # Repeat errors vs n_trails for new evaluation function with regularization term
