@@ -337,56 +337,234 @@ TRUNCATED = 15
 GENCONVER = 198 # 198 min for ion conversion data  205.62 for gamma radation
 namesk = ['Time', 'A570', 'A600', 'A690', 'A750']
 
-
-# Now rad51
-
-datar = pd.read_csv(r"C:\Users\danie\Desktop\Daniel_Master_Directory\AMMPERunofficial\abFinalPlots\AlamarblueRawdatarad51KGy.csv", names = namesk)
-datarSTD = pd.read_csv(r"C:\Users\danie\Desktop\Daniel_Master_Directory\AMMPERunofficial\abFinalPlots\AlamarblueRawdatarad51KGySTD.csv", names = namesk)
-
-datar2 = pd.read_csv(r"C:\Users\danie\Desktop\Daniel_Master_Directory\AMMPERunofficial\abFinalPlots\AlamarblueRawdatarad5125Gy.csv", names = namesk)
-datarSTD2 = pd.read_csv(r"C:\Users\danie\Desktop\Daniel_Master_Directory\AMMPERunofficial\abFinalPlots\AlamarblueRawdatarad5125GySTD.csv", names = namesk)
-
-datar3 = pd.read_csv(r"C:\Users\danie\Desktop\Daniel_Master_Directory\AMMPERunofficial\abFinalPlots\AlamarblueRawdatarad515Gy.csv", names = namesk)
-datarSTD3 = pd.read_csv(r"C:\Users\danie\Desktop\Daniel_Master_Directory\AMMPERunofficial\abFinalPlots\AlamarblueRawdatarad515GySTD.csv", names = namesk)
-
-datar5 = pd.read_csv(r"C:\Users\danie\Desktop\Daniel_Master_Directory\AMMPERunofficial\abFinalPlots\AlamarblueRawdatarad5110Gy.csv", names = namesk)
-datarSTD5 = pd.read_csv(r"C:\Users\danie\Desktop\Daniel_Master_Directory\AMMPERunofficial\abFinalPlots\AlamarblueRawdatarad5110GySTD.csv", names = namesk)
-
-datar6 = pd.read_csv(r"C:\Users\danie\Desktop\Daniel_Master_Directory\AMMPERunofficial\abFinalPlots\AlamarblueRawdatarad5120Gy.csv", names = namesk)
-datarSTD6 = pd.read_csv(r"C:\Users\danie\Desktop\Daniel_Master_Directory\AMMPERunofficial\abFinalPlots\AlamarblueRawdatarad5120GySTD.csv", names = namesk)
-
-datar7 = pd.read_csv(r"C:\Users\danie\Desktop\Daniel_Master_Directory\AMMPERunofficial\abFinalPlots\AlamarblueRawdatarad5130Gy.csv", names = namesk)
-datarSTD7 = pd.read_csv(r"C:\Users\danie\Desktop\Daniel_Master_Directory\AMMPERunofficial\abFinalPlots\AlamarblueRawdatarad5130GySTD.csv", names = namesk)
-
-# Create a directory named 'figures' if it doesn't exist
-if not os.path.exists('figures'):
-    os.makedirs('figures')
-
-plt.figure(1)
-main_DP("rad51_Basic_0", datar, datarSTD)
-plt.savefig('figures/rad51_Basic_0.png')
-
-plt.figure(2)
-main_DP("rad51_Basic_25", datar2, datarSTD2)
-plt.savefig('figures/rad51_Basic_25.png')
-
-plt.figure(3)
-main_DP("rad51_Basic_10", datar3, datarSTD3)
-plt.savefig('figures/rad51_Basic_10.png')
-
-plt.figure(4)
-main_DP("rad51_Basic_50", datar5, datarSTD5)
-plt.savefig('figures/rad51_Basic_50.png')
-
-plt.figure(5)
-main_DP("rad51_Basic_200", datar6, datarSTD6)
-plt.savefig('figures/rad51_Basic_200.png')
-
-plt.figure(6)
-main_DP("rad51_Basic_300", datar7, datarSTD7)
-plt.savefig('figures/rad51_Basic_300.png')
+import os
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.interpolate import interp1d
 
 
+def plot_combined(data_list, data_std_list, names):
+    plt.figure(figsize=(14, 8))
+
+    colors = ['#d31e25', '#d7a32e', '#369e4b', '#5db5b7', '#31407b', '#d1c02b', '#8a3f64', '#4f2e39']
+    markers = ['*', '^', 'o', 's', 'p', 'D', 'x', '+']
+    linestyles = ['-.', '--', ':', '-', '-.', '--', ':', '-']
+
+    for idx, (data, data_std, name) in enumerate(zip(data_list, data_std_list, names)):
+        P_m = []
+        B_m = []
+
+        for root, dirs, files in os.walk(
+                r"C:\Users\danie\Desktop\Daniel_Master_Directory\AMMPERunofficial\Results_Bulk_aB" + '\\' + str(
+                    name)):
+            if len(files) > 1:
+                namess = ["Generation", "x", "y", "z", "Health"]
+                resultsi = pd.read_csv(os.path.join(root, files[0]), names=namess)
+                Bi, Pi, t = AlamarblueMechanics(resultsi,
+                                                [0.7799990799515666, 1.679928455577914, 0.10002078747628415, 450, 6601,
+                                                 9994, 0.5], 'k')  # optimal
+                B_m.append(Bi)
+                P_m.append(Pi)
+
+        if B_m:
+            B_m = np.stack(B_m, axis=0)
+            std_B = np.std(B_m, axis=0)
+            nB = np.shape(B_m)[0]
+            std_B = std_B / np.sqrt(nB)
+        else:
+            B_m = []
+            std_B = []
+
+        if P_m:
+            P_m = np.stack(P_m, axis=0)
+            std_P = np.std(P_m, axis=0)
+            nP = np.shape(P_m)[0]
+            std_P = std_P / np.sqrt(nP)
+        else:
+            P_m = []
+            std_P = []
+
+        B1 = np.mean(B_m, axis=0)
+        P1 = np.mean(P_m, axis=0)
+
+        data1p = pd.DataFrame(
+            data[['A570', 'A600', 'A690', 'A750']].values + data_std[['A570', 'A600', 'A690', 'A750']].values,
+            columns=['A570', 'A600', 'A690', 'A750'])
+        data1n = pd.DataFrame(
+            data[['A570', 'A600', 'A690', 'A750']].values - data_std[['A570', 'A600', 'A690', 'A750']].values,
+            columns=['A570', 'A600', 'A690', 'A750'])
+        data1p['Time'] = data['Time']
+        data1n['Time'] = data['Time']
+
+        B_C, P_C, Time = ExperimentalConencentrations(data.head(TRUNCATED))
+        B_Cp, P_Cp, Time = ExperimentalConencentrations(data1p.head(TRUNCATED))
+        B_Cn, P_Cn, Time = ExperimentalConencentrations(data1n.head(TRUNCATED))
+        B_C = np.append(B_C, B_C[-1])
+        P_C = np.append(P_C, P_C[-1])
+        Time = np.append(Time, 80)
+
+        B_Ct = interp1d(Time, B_C, kind='linear')
+        P_Ct = interp1d(Time, P_C, kind='linear')
+
+        B_Cp = np.append(B_Cp, B_Cp[-1])
+        P_Cp = np.append(P_Cp, P_Cp[-1])
+
+        B_Ctp = interp1d(Time, B_Cp, kind='linear')
+        P_Ctp = interp1d(Time, P_Cp, kind='linear')
+
+        B_Cn = np.append(B_Cn, B_Cn[-1])
+        P_Cn = np.append(P_Cn, P_Cn[-1])
+
+        B_Ctn = interp1d(Time, B_Cn, kind='linear')
+        P_Ctn = interp1d(Time, P_Cn, kind='linear')
+
+        Healthy = resultsi.loc[resultsi["Health"] == 1]
+        Generations = np.linspace(0, int(Healthy['Generation'].max()), num=len(Healthy['Generation'].unique()))
+        Generations_t = Generations * GENCONVER / 60
+
+        B_Ci = B_Ct(Generations_t)
+        P_Ci = P_Ct(Generations_t)
+        B_Ci = B_Ci / (B_Ci[0] + P_Ci[0])
+        P_Ci = P_Ci / (B_Ci[0] + P_Ci[0])
+
+        B_Cip = B_Ctp(Generations_t)
+        P_Cip = P_Ctp(Generations_t)
+        B_Cip = B_Cip / (B_Cip[0] + P_Cip[0])
+        P_Cip = P_Cip / (B_Cip[0] + P_Cip[0])
+
+        B_Cin = B_Ctn(Generations_t)
+        P_Cin = P_Ctn(Generations_t)
+        B_Cin = B_Cin / (B_Cin[0] + P_Cin[0])
+        P_Cin = P_Cin / (B_Cin[0] + P_Cin[0])
+
+        plt.errorbar(Time, B_C * (1 / max(B_C)), yerr=[np.abs(B_C - B_Cn), np.abs(B_C - B_Cp)],
+                     fmt=markers[idx % len(markers)], capsize=5, color=colors[idx % len(colors)],
+                     label=f'Experimental {name}')
+
+        plt.errorbar(t, B1, yerr=[std_B, std_B], fmt=linestyles[idx % len(linestyles)], capsize=5,
+                     color=colors[idx % len(colors)], label=f'Predicted {name}')
+
+    plt.xlabel('Time [hrs]')
+    plt.ylabel('Concentration')
+    plt.xlim([0, TRUNCATED])
+    plt.title('Combined Experimental and Predicted Concentrations')
+    plt.legend()
+    plt.show()
+
+
+
+def plot_combined_pink(data_list, data_std_list, names):
+    plt.figure(figsize=(14, 8))
+
+    colors = ['#d31e25', '#d7a32e', '#369e4b', '#5db5b7', '#31407b', '#d1c02b', '#8a3f64', '#4f2e39']
+    markers = ['*', '^', 'o', 's', 'p', 'D', 'x', '+']
+    linestyles = ['-.', '--', ':', '-', '-.', '--', ':', '-']
+
+    for idx, (data, data_std, name) in enumerate(zip(data_list, data_std_list, names)):
+        P_m = []
+        B_m = []
+
+        for root, dirs, files in os.walk(
+                r"C:\Users\danie\Desktop\Daniel_Master_Directory\AMMPERunofficial\Results_Bulk_aB" + '\\' + str(
+                    name)):
+            if len(files) > 1:
+                namess = ["Generation", "x", "y", "z", "Health"]
+                resultsi = pd.read_csv(os.path.join(root, files[0]), names=namess)
+                Bi, Pi, t = AlamarblueMechanics(resultsi,
+                                                [0.7799990799515666, 1.679928455577914, 0.10002078747628415, 450, 6601,
+                                                 9994, 0.5], 'k')  # optimal
+                B_m.append(Bi)
+                P_m.append(Pi)
+
+        if B_m:
+            B_m = np.stack(B_m, axis=0)
+            std_B = np.std(B_m, axis=0)
+            nB = np.shape(B_m)[0]
+            std_B = std_B / np.sqrt(nB)
+        else:
+            B_m = []
+            std_B = []
+
+        if P_m:
+            P_m = np.stack(P_m, axis=0)
+            std_P = np.std(P_m, axis=0)
+            nP = np.shape(P_m)[0]
+            std_P = std_P / np.sqrt(nP)
+        else:
+            P_m = []
+            std_P = []
+
+        B1 = np.mean(B_m, axis=0)
+        P1 = np.mean(P_m, axis=0)
+
+        data1p = pd.DataFrame(
+            data[['A570', 'A600', 'A690', 'A750']].values + data_std[['A570', 'A600', 'A690', 'A750']].values,
+            columns=['A570', 'A600', 'A690', 'A750'])
+        data1n = pd.DataFrame(
+            data[['A570', 'A600', 'A690', 'A750']].values - data_std[['A570', 'A600', 'A690', 'A750']].values,
+            columns=['A570', 'A600', 'A690', 'A750'])
+        data1p['Time'] = data['Time']
+        data1n['Time'] = data['Time']
+
+        B_C, P_C, Time = ExperimentalConencentrations(data.head(TRUNCATED))
+        B_Cp, P_Cp, Time = ExperimentalConencentrations(data1p.head(TRUNCATED))
+        B_Cn, P_Cn, Time = ExperimentalConencentrations(data1n.head(TRUNCATED))
+        B_C = np.append(B_C, B_C[-1])
+        P_C = np.append(P_C, P_C[-1])
+        Time = np.append(Time, 80)
+
+        B_Ct = interp1d(Time, B_C, kind='linear')
+        P_Ct = interp1d(Time, P_C, kind='linear')
+
+        B_Cp = np.append(B_Cp, B_Cp[-1])
+        P_Cp = np.append(P_Cp, P_Cp[-1])
+
+        B_Ctp = interp1d(Time, B_Cp, kind='linear')
+        P_Ctp = interp1d(Time, P_Cp, kind='linear')
+
+        B_Cn = np.append(B_Cn, B_Cn[-1])
+        P_Cn = np.append(P_Cn, P_Cn[-1])
+
+        B_Ctn = interp1d(Time, B_Cn, kind='linear')
+        P_Ctn = interp1d(Time, P_Cn, kind='linear')
+
+        Healthy = resultsi.loc[resultsi["Health"] == 1]
+        Generations = np.linspace(0, int(Healthy['Generation'].max()), num=len(Healthy['Generation'].unique()))
+        Generations_t = Generations * GENCONVER / 60
+
+        B_Ci = B_Ct(Generations_t)
+        P_Ci = P_Ct(Generations_t)
+        B_Ci = B_Ci / (B_Ci[0] + P_Ci[0])
+        P_Ci = P_Ci / (B_Ci[0] + P_Ci[0])
+
+        B_Cip = B_Ctp(Generations_t)
+        P_Cip = P_Ctp(Generations_t)
+        B_Cip = B_Cip / (B_Cip[0] + P_Cip[0])
+        P_Cip = P_Cip / (B_Cip[0] + P_Cip[0])
+
+        B_Cin = B_Ctn(Generations_t)
+        P_Cin = P_Ctn(Generations_t)
+        B_Cin = B_Cin / (B_Cin[0] + P_Cin[0])
+        P_Cin = P_Cin / (B_Cin[0] + P_Cin[0])
+
+        plt.errorbar(Time, P_C, yerr=[np.abs(B_C - B_Cn), np.abs(B_C - B_Cp)],
+                     fmt=markers[idx % len(markers)], capsize=5, color=colors[idx % len(colors)],
+                     label=f'Experimental {name}')
+
+        plt.errorbar(t, P1, yerr=[std_B, std_B], fmt=linestyles[idx % len(linestyles)], capsize=5,
+                     color=colors[idx % len(colors)], label=f'Predicted {name}')
+
+    plt.xlabel('Time [hrs]')
+    plt.ylabel('Concentration')
+    plt.xlim([0, TRUNCATED])
+    plt.title('Combined Experimental and Predicted Concentrations')
+    plt.legend()
+    plt.show()
+
+TRUNCATED = 15
+GENCONVER = 198 # 198 min for ion conversion data  205.62 for gamma radation
+namesk = ['Time', 'A570', 'A600', 'A690', 'A750']
 # Now WT
 dataw = pd.read_csv(r"C:\Users\danie\Desktop\Daniel_Master_Directory\AMMPERunofficial\abFinalPlots\AlamarblueRawdataWTKGy.csv", names = namesk)
 datawSTD = pd.read_csv(r"C:\Users\danie\Desktop\Daniel_Master_Directory\AMMPERunofficial\abFinalPlots\AlamarblueRawdataWTKGySTD.csv", names = namesk)
@@ -405,28 +583,12 @@ datawSTD5 = pd.read_csv(r"C:\Users\danie\Desktop\Daniel_Master_Directory\AMMPERu
 
 dataw6 = pd.read_csv(r"C:\Users\danie\Desktop\Daniel_Master_Directory\AMMPERunofficial\abFinalPlots\AlamarblueRawdataWT30Gy.csv", names = namesk)
 datawSTD6 = pd.read_csv(r"C:\Users\danie\Desktop\Daniel_Master_Directory\AMMPERunofficial\abFinalPlots\AlamarblueRawdataWT30GySTD.csv", names = namesk)
+# Example usage
+data_list = [dataw, dataw2, dataw3, dataw4, dataw5, dataw6]
+data_std_list = [datawSTD, datawSTD2, datawSTD3, datawSTD4, datawSTD5, datawSTD6]
+names = ["WT_Basic_0", "WT_Basic_25", "WT_Basic_10", "WT_Basic_50", "WT_Basic_200", "WT_Basic_300"]
 
-
-plt.figure(7)
-main_DP("WT_Basic_0", dataw, datawSTD)
-plt.savefig('figures/WT_Basic_0.png')
-
-plt.figure(8)
-main_DP("WT_Basic_25", dataw2, datawSTD2)
-plt.savefig('figures/WT_Basic_25.png')
-
-plt.figure(9)
-main_DP("WT_Basic_10", dataw3, datawSTD3)
-plt.savefig('figures/WT_Basic_10.png')
-
-plt.figure(10)
-main_DP("WT_Basic_50", dataw4, datawSTD4)
-plt.savefig('figures/WT_Basic_50.png')
-
-plt.figure(11)
-main_DP("WT_Basic_200", dataw5, datawSTD5)
-plt.savefig('figures/WT_Basic_200.png')
-
-plt.figure(12)
-main_DP("WT_Basic_300", dataw6, datawSTD6)
-plt.savefig('figures/WT_Basic_300.png')
+# Blue
+# plot_combined(data_list, data_std_list, names)
+# pink
+plot_combined_pink(data_list, data_std_list, names)

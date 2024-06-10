@@ -209,3 +209,30 @@ pairs(marginal,
 library(multcomp)
 
 cld(marginal, Letters=letters)
+
+
+################################
+
+### Use Kruskal wallis
+# Load necessary library
+library(dplyr)
+
+# Read the data from a CSV file
+data <- read.delim("Half_lives_RM2ANOVA.tsv")
+
+# Ensure the 'Half_life' column is a factor
+data$Half_life <- as.factor(data$Half_life)
+
+# Perform the Kruskal-Wallis test
+kruskal_test <- kruskal.test(value ~ Half_life, data = data)
+
+# Print the result of the Kruskal-Wallis test
+print(kruskal_test)
+
+# If significant, perform pairwise comparisons using Wilcoxon rank-sum tests with Holm correction
+if (kruskal_test$p.value < 0.05) {
+  pairwise_results <- pairwise.wilcox.test(data$value, data$Half_life, p.adjust.method = "holm")
+  print(pairwise_results)
+}
+
+
