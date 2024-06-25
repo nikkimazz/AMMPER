@@ -450,6 +450,7 @@ def plot_combined(data_list, data_std_list, names):
     plt.xlim([0, TRUNCATED])
     plt.title('Combined Experimental and Predicted Concentrations')
     plt.legend()
+    plt.savefig('paperfigures2024/combined_analysis_1.svg', format='svg')
     plt.show()
 
 
@@ -560,6 +561,7 @@ def plot_combined_pink(data_list, data_std_list, names):
     plt.xlim([0, TRUNCATED])
     plt.title('Combined Experimental and Predicted Concentrations')
     plt.legend()
+    plt.savefig('paperfigures2024/Combined_analysis2.svg', format='svg')
     plt.show()
 
 TRUNCATED = 15
@@ -589,6 +591,6 @@ data_std_list = [datawSTD, datawSTD2, datawSTD3, datawSTD4, datawSTD5, datawSTD6
 names = ["WT_Basic_0", "WT_Basic_25", "WT_Basic_10", "WT_Basic_50", "WT_Basic_200", "WT_Basic_300"]
 
 # Blue
-# plot_combined(data_list, data_std_list, names)
+plot_combined(data_list, data_std_list, names)
 # pink
-plot_combined_pink(data_list, data_std_list, names)
+# plot_combined_pink(data_list, data_std_list, names)
