@@ -415,10 +415,10 @@ Growth_m3 = Growth_m3[:24, :]
 Growth_m4 = Growth_m4[:24, :]
 
 # Now all arrays should have shape (24, 4)
-column1_Growth_m = Growth_m[:, 0]
-column1_Growth_m2 = Growth_m2[:, 0]
-column1_Growth_m3 = Growth_m3[:, 0]
-column1_Growth_m4 = Growth_m4[:, 0]
+column1_Growth_m = Growth_m[:, 2]
+column1_Growth_m2 = Growth_m2[:, 2]
+column1_Growth_m3 = Growth_m3[:, 2]
+column1_Growth_m4 = Growth_m4[:, 2]
 color1 = "#d31e25"
 color2 = "#d7a32e"
 color3 = "#369e4b"
