@@ -1,4 +1,0 @@
-Cell Type: wt
-Rad Type: Deep Space
-Sim Dim: 300microns
-NumGen: 15ROS model: Basic ROS
