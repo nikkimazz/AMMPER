@@ -378,7 +378,8 @@ def plot_loss(iteration_values, loss_values):
     plt.legend()
 
     # Display the plot
-    plt.show()
+    plt.savefig('paperfigures2024/iterationsloss.svg', format='svg')
+
 
 if __name__ == "__main__":
     TRUNCATED_START = 4
@@ -464,7 +465,7 @@ if __name__ == "__main__":
             cost_per_trial.append(incumbent_cost)
 
         plot_loss(iteration_values, cost_per_trial)
-        
+
     else:
         # Start value truncation = 0 for WT, but rad51 not zero
         namesk = ['Time', 'A570', 'A600', 'A690', 'A750']

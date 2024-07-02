@@ -184,7 +184,7 @@ plt.errorbar(np.arange(len(mean4)), mean4, yerr = std4, xerr = None, marker = 'v
 plt.title("rad51 Unhealthy-Healthy cell ratios")
 plt.legend()
 plt.xlabel("Generation")
-
+plt.xticks(np.arange(12, 16))  # Set xticks to only 12, 13, 14, 15
 
 plt.xlim(11.8,15.2)
 plt.savefig('paperfigures2024/half_life_ratios.svg', format='svg')
@@ -307,6 +307,7 @@ plt.errorbar(np.arange(len(mean8)), mean8, yerr = std8, xerr = None, marker = '^
 plt.xlim(11.8,15.2)
 plt.title("WT Unhealthy-Healthy cell ratios")
 plt.legend()
+plt.xticks(np.arange(12, 16))  # Set xticks to only 12, 13, 14, 15
 plt.xlabel("Generation")
 plt.savefig('paperfigures2024/complexvsbasic_1.svg', format='svg')
 
@@ -317,6 +318,7 @@ plt.errorbar(np.arange(len(mean3)), mean3, yerr = std3, xerr = None, marker = '^
 plt.errorbar(np.arange(len(mean4)), mean4, yerr = std4, xerr = None, marker = '^', color = color4, linestyle = '-.', label = 'Complex rad51 5 Gy, n=' + str(n4),elinewidth = 1)
 plt.title("rad51 Unhealthy-Healthy cell ratios")
 plt.legend()
+plt.xticks(np.arange(12, 16))  # Set xticks to only 12, 13, 14, 15
 plt.xlabel("Generation")
 
 plt.xlim(11.8,15.2)
@@ -430,15 +432,15 @@ color8 = "#4f2e39"
 
 # Plotting histograms with different colors
 plt.figure(40)
-plt.hist(column1_Growth_m, bins=20, alpha=0.5, label='WT_Basic_2.5Gy', color=color1)
-plt.hist(column1_Growth_m2, bins=20, alpha=0.5, label='WT_Basic_5Gy', color=color2)
-plt.hist(column1_Growth_m3, bins=20, alpha=0.5, label='WT_Complex_2.5Gy', color=color3)
-plt.hist(column1_Growth_m4, bins=20, alpha=0.5, label='WT_Complex_5Gy', color=color4)
+plt.hist(column1_Growth_m, bins=20, alpha=0.5, label='WT Basic 2.5Gy', color=color1)
+plt.hist(column1_Growth_m2, bins=20, alpha=0.5, label='WT Basic 5Gy', color=color2)
+plt.hist(column1_Growth_m3, bins=20, alpha=0.5, label='WT Complex 2.5Gy', color=color3)
+plt.hist(column1_Growth_m4, bins=20, alpha=0.5, label='WT Complex 5Gy', color=color4)
 
 # Adding labels and title
-plt.xlabel('Values')
+plt.xlabel('Unhealthy-Healthy cell ratios')
 plt.ylabel('Frequency')
-plt.title('Histogram of 4 Distributions')
+plt.title('Unhealthy-Healthy cell ratios nonparametric distributions')
 plt.legend()
 plt.savefig('paperfigures2024/nonparametric_distributions.svg', format='svg')
 
