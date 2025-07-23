@@ -2,7 +2,7 @@
 """
 Created on Mon Feb  7 08:31:34 2022
 
-@author: asingh21
+@authors: asingh21, MarcellLoza
 """
 
 """
@@ -29,8 +29,9 @@ def cellPlot(data,gen,radData,ROSData,radGen,N,plots_dir):
 
     # COLOR BLIND SAFE COLORS
     healthy = '#91bfdb'
-    damaged = '#ffffbf'
+    damaged = "#aa0bca"
     dead = '#fc8d59'
+    apoptotic = "#f2ff00"
 
     n = len(data)
 
@@ -61,14 +62,17 @@ def cellPlot(data,gen,radData,ROSData,radGen,N,plots_dir):
         data1 = data.loc[data['Health'] == 1]
         data2 = data.loc[data['Health'] == 2]
         data3 = data.loc[data['Health'] == 3]
+        data4 = data.loc[data['Health'] == 4]
 
         data1 = data1.to_numpy()
         data2 = data2.to_numpy()
         data3 = data3.to_numpy()
+        data4 = data4.to_numpy()
 
         ax.scatter(data1[:, 1], data1[:, 2], data1[:, 3], c=healthy, alpha=0.15, marker = 'o')
         ax.scatter(data2[:, 1], data2[:, 2], data2[:, 3], c=damaged, alpha=1, marker = '^')
         ax.scatter(data3[:, 1], data3[:, 2], data3[:, 3], c=dead, alpha=1, marker = '*')
+        ax.scatter(data4[:, 1], data4[:, 2], data4[:, 3], c=apoptotic, alpha=1, marker = 'x')
         ax.scatter(radData[:, 0], radData[:, 1], radData[:, 2], c='#9ED9A1', alpha=1, marker = 'o')
 
         fig.savefig(plots_dir + figName, dpi = 300)

@@ -93,7 +93,7 @@ inputs:
 outputs:
     c: cell object with adjusted parameters
                 
-@author: asingh21
+@authors: asingh21, MarcellLoza
 """
 
 class Cell:
@@ -549,27 +549,57 @@ class Cell:
         numSSBs = self.numSSBs
         numDSBs = self.numDSBs
         initHealth = self.health
-        
-        if numSSBs > 0:
-            numSSBs = numSSBs - 3
-            if numSSBs <= 0:
-                numSSBs = 0
+
+        # Considers global cell cycle phase effects on repair probability 
+        phase = rand.choice(['G1', 'S', 'G2', 'M' ])
+        P_phase_map = {'G1': 0.10, 'S': 0.25, 'G2': 0.20, 'M': 0.05}
+        P_phase = P_phase_map[phase]
+
+        # Diminishes repair probability with each additional failed attempt
+        if not hasattr(self, 'damageEvents'):
+            self.damageEvents = 0
+        P_base = 0.20 * (0.90 ** self.damageEvents)
+
+        # Calculate P_SSB based on numSSBs
+        P_SSB = min(0.30, 0.15 / (1 + self.numSSBs))
+
+        # Calculate specifically P_DSB based on cycle phase
+        P_DSB_raw = 0.08 / (1 + self.numDSBs)
+        if phase in ['S', 'G2']:
+            P_DSB_mod = P_DSB_raw
+        else:
+            P_DSB_mod = P_DSB_raw * 0.4
+        P_DSB = min(0.15, P_DSB_mod)
+
+        # Calculate the total probability of repair
+        P_repair = P_base + P_phase + P_SSB + P_DSB
+
+        # Determine if the cell is apoptotic based on repair probability
+        self.apoptotic = False
+        if P_repair < 0.35 and P_repair > 0.20:
+            self.apoptotic = True
+
+        # Repair attempt
+        repairRoll = rand.random()
+        if repairRoll <= P_repair:
+            if numDSBs > 0:
+                self.numDSBs -= 1
+            if numSSBs > 0:
+                self.numSSBs -= 1
+        else:
+            if P_repair < 0.20:
+                self.health = 3
+            elif self.apoptotic:
+                self.health = 4
             else:
-                health = 2
-        elif numDSBs > 0:
-            rand = rand.uniform(0,100)
-            if rand < 50:
-                numDSBs = numDSBs-1
-                if numDSBs <= 0:
-                    numDSBs = 0
-                else: 
-                    health = 2
-            else:
-                health = 3
-    
-        if numSSBs == 0 and numDSBs == 0:
-            health = 1
-    
-        if initHealth != health or health == 2:
-            self.health = health
-            return self
+                self.health = 2
+
+        # if the cell has no damage, set health to 1
+        if self.numSSBs == 0 and self.numDSBs == 0:
+            self.health = 1
+
+        # If cell has retained damage, increment damage events
+        if self.health ==2 and (self.numSSBs > 0 or self.numDSBs > 0):
+            self.damageEvents += 1
+
+        return self

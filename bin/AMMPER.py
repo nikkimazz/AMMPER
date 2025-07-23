@@ -490,7 +490,11 @@ for g in range(1, gen + 1):
         for c in cells:
             health = c.health
             if health == 2:
+                attempts = 0
                 repairedCell = c.cellRepair(g)
+                while attempts < 6 and repairedCell.health == 2:
+                    repairedCell = repairedCell.cellRepair(g)
+                    attempts += 1
                 newHealth = repairedCell.health
                 repairedCellPos = repairedCell.position
                 T[repairedCellPos[0], repairedCellPos[1], repairedCellPos[2]] = newHealth
