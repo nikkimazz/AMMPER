@@ -24,26 +24,29 @@ def cellPlot_deepSpace(data,gen,radData,ROSData,N,plots_dir):
     
     minmax = get_fixed_mins_maxs(0, N)
     
-    healthy = '#7FBBDF'
-    damaged = '#483c6a'
-    dead = '#F7AF97'
+    healthy = '#91bfdb'
+    damaged = "#aa0bca"
+    dead = '#fc8d59'
+    apoptotic = "#f2ff00"
 
     n = len(data)
 
     df_data = pd.DataFrame(data, columns=['Generation', 'x', 'y', 'z', 'Health'])
 
+    figs = {}
+    axes = {}
     
     for g in range(gen+1):
         figName = 'fig' + str(g)
         axName = 'ax' + str(g)
-        locals()[figName] = plt.figure()
-        locals()[axName] = locals()[figName].add_subplot(projection='3d')
-        locals()[axName].set_xlim(minmax)
-        locals()[axName].set_ylim(minmax)
-        locals()[axName].set_zlim(minmax)
-        locals()[axName].set_xlabel('X')
-        locals()[axName].set_ylabel('Y')
-        locals()[axName].set_zlabel('Z')
+        figs[figName] = plt.figure()
+        axes[axName] = figs[figName].add_subplot(projection='3d')
+        axes[axName].set_xlim(minmax)
+        axes[axName].set_ylim(minmax)
+        axes[axName].set_zlim(minmax)
+        axes[axName].set_xlabel('X')
+        axes[axName].set_ylabel('Y')
+        axes[axName].set_zlabel('Z')
         plt.title('g = '+str(g))
 
         #########################
@@ -63,16 +66,20 @@ def cellPlot_deepSpace(data,gen,radData,ROSData,N,plots_dir):
         data1 = data.loc[data['Health'] == 1]
         data2 = data.loc[data['Health'] == 2]
         data3 = data.loc[data['Health'] == 3]
+        data4 = data.loc[data['Health'] == 4]
 
         data1 = data1.to_numpy()
         data2 = data2.to_numpy()
         data3 = data3.to_numpy()
+        data4 = data4.to_numpy()
 
         axName = 'ax' + str(g)  #### <------
 
-        locals()[axName].scatter(data1[:, 1], data1[:, 2], data1[:, 3], c=healthy, alpha=0.15)
-        locals()[axName].scatter(data2[:, 1], data2[:, 2], data2[:, 3], c=damaged, alpha=1)
-        locals()[axName].scatter(data3[:, 1], data3[:, 2], data3[:, 3], c=dead, alpha=1)
+        axes[axName].scatter(data1[:, 1], data1[:, 2], data1[:, 3], c=healthy, alpha=0.15)
+        axes[axName].scatter(data2[:, 1], data2[:, 2], data2[:, 3], c=damaged, alpha=1)
+        axes[axName].scatter(data3[:, 1], data3[:, 2], data3[:, 3], c=dead, alpha=1)
+        axes[axName].scatter(data4[:, 1], data4[:, 2], data4[:, 3], c=apoptotic, alpha=1)
+
 
 
 
@@ -80,11 +87,11 @@ def cellPlot_deepSpace(data,gen,radData,ROSData,N,plots_dir):
         n = len(ROSData)
         for g in range(gen + 1):
                 ROSName = 'ax' + str(g)
-                locals()[ROSName].scatter(ROSData[:, 0], ROSData[:, 1], ROSData[:, 2], s=5, c='#9ED9A1', alpha=1)
+                axes[ROSName].scatter(ROSData[:, 0], ROSData[:, 1], ROSData[:, 2], s=5, c='#9ED9A1', alpha=1)
         
     for g in range(gen+1):
         figName = 'fig' + str(g)
-        locals()[figName].savefig(plots_dir + figName)
+        figs[figName].savefig(plots_dir + figName)
 
 
 

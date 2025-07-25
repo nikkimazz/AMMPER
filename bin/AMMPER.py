@@ -291,7 +291,19 @@ for g in range(1, gen + 1):
 
     if radType == "Deep Space":
         # take information from text file for #tracks of each proton energy
-        deepSpaceFluenceDat = np.genfromtxt('DeepSpaceFluence0.1months_data.txt')
+        import os
+
+# Get the absolute path to the current script's directory
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Build the full path to the data file
+        file_path = os.path.join(current_dir, 'DeepSpaceFluence0.1months_data.txt') # adjust '..' if it's in same folder
+
+# Normalize the path (Windows safe)
+        file_path = os.path.normpath(file_path)
+
+# Load the data
+        deepSpaceFluenceDat = np.genfromtxt(file_path, skip_header=1)
         # NOTE: For Deep Space sim, radiation delivery is staggered over time
         for it in range(len(deepSpaceFluenceDat)):
             # get generation at which traversal will occur
