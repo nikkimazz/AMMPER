@@ -1,4 +1,4 @@
-pi# This Python file uses utf-8 encoding.
+# This Python file uses utf-8 encoding.
 
 """
 Graphical User Interface for AMMPER v2.0
