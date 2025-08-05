@@ -436,7 +436,7 @@ class Cell:
         file_path = os.path.normpath(file_path)
 
 # Load the data
-        appopDat = np.genfromtxt(file_path, skip_header=1)
+        apopDat = np.genfromtxt(file_path, skip_header=1)
         
         Avogadro = 6.022e23
         H2O2_concentration = round(H2O2/(Avogadro*0.001*27),1)
