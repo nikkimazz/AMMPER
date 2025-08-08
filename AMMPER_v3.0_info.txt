@@ -1,0 +1,83 @@
+
+AMMPER v3.0 Info
+
+
+AMMPER (Agent-based Model for Microbial Populations Exposed to Radiation) 
+is a simulation tool used to model radiation-induced DNA damage 
+and repair in eukaryotic cells (Saccharomyces cerevisiae). It is designed 
+to act as an educational tool and to facilitate early-stage planning 
+of space radiaiton biology experiments. AMMPER is inspired by the BioSentinel 
+project, and incorporates biological ground testing data as well as radiation 
+measurments taken by the CubeSat's linear energy transfer (LET) spectrometer.
+
+
+
+
+Key Features (v3.0):
+
+Simulates cell health outcomes (healthy, damaged, apoptotic, necrotic) 
+over multiple generations after radiation exposure
+
+Allows choice between several radiation types, basic or complex ROS, 
+and number of starting cells (1-300)
+
+Visual output includes cell grid plots per generation
+
+Generates CSV data for each generation with full cell state tracking
+(Position, generation, health)
+
+
+
+
+New in Version 3.0:
+
+Probabilistic Repair Logic Overhaul:
+All new probabilistic cell repair logic and multiple repair attempts per generation
+
+    Cumulative Damage Modifier:
+    Accounts for increased difficulty of repair success after prolonged damage retention cause by 
+    factors such as: 
+    stalling of repair protiens at telomeres, protien pathway fatigue, oxidative stress
+
+    Strand Break factoring:
+    The amount of Double and Single strand breaks present now has a direct 
+    effect on repair outcomes
+
+    Cell Cycle Phase Effects:
+    Repair success depends on the simulated cell cycle phase (G1, S, G2, M)
+
+New radiation types:
+Inclusion of FE-56, O-16 ions and 1 GEV Protons
+    All energy deposition and track data was generated from Geant4 radiation 
+    simulations and has been validated to ensure accurate energy-enviornment
+    interactions.
+
+    Several new RadData files awaiting full integration
+
+
+
+Use Cases:
+
+Educational demonstrations of radiation effects on cells
+
+High-level screening of variable combinations for experiment design
+
+Preliminary assessment of biological payload requirements
+
+
+
+
+Issues and Notes (To be fixed in furture versions): 
+
+AMMPERGUI:
+AMMPERGUI.py, AMMPERrunsGUI.py and AMMPERCLI.py all currently work, but are 
+not updated for compatability with AMMPER v3.0 and may yeild errored results.
+To use the simulation, it is recommended that the master AMMPER.py script is run 
+directly.
+
+New Radiation Types: 
+FE-56, O-16 ions and 1 GEV Proton radiation types require further testing and 
+integration. They may give unrealistic outputs, however, their energy depositions are 
+pulled from accurate data.
+
+For installation instructions, see UserGuide.txt

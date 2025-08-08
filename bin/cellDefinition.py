@@ -93,7 +93,9 @@ inputs:
 outputs:
     c: cell object with adjusted parameters
                 
-@authors: asingh21, MarcellLoza
+@authors: 
+asingh21 
+MarcellLoza (AMMPER v3.0 cellRepair)
 """
 
 class Cell:
@@ -553,7 +555,9 @@ class Cell:
            self.health = 3
         
         return self
-        
+
+ #AMMPER v3.0 new cellRepair model       
+ 
     def cellRepair(self,g):
         import random as rand
         

@@ -6,6 +6,10 @@ Graphical User Interface for AMMPER v2.0
 Created by Madeline Marous, in coordination with original code created by Amrita Singh and edited by Daniel Palacios.
 Review README and Credits for more information.
 
+"GUI IS NOT YET COMPATIBLE WITH AMMPER v3.0 AND MAY YEILD ERRORED RESULTS. 
+TO USE SIMULATION, RUN AMMPER.PY INSTEAD. 
+GUI WILL BE UPDATED IN THE FUTURE TO BE COMPATIBLE WITH AMMPER v3.0."
+
 """
 # GUI modules
 import sys

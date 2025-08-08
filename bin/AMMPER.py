@@ -27,6 +27,7 @@ outputs:
 """
 @edited by Daniel Palacios 
 @edited by Bobby Flores
+@edited by Marcell Lozano
 """
 ###############################################################
 ### GENERIC LIBRARIES

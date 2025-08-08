@@ -1,0 +1,85 @@
+
+User Instructions for AMMPER v3.0
+
+Instructions are for using AMMPER through Visual Studio Code
+
+Downloading from GitHub 
+
+1. On the NASA/AMMPER github repository, click the green "Code" button
+and on the dropdown click "Download Zip" to download a zip file of the code.
+
+2. Extract the zip file
+
+3. In VS Code, navigate to the "Explorer" tab, then click "Open Volder"
+Locate the extracted file and open it.
+
+
+
+Setting Up a Virtual Enviornment in VS Code
+
+4. Open a terminal 
+
+5. Inside the terminal, type the command "python -m venv venv"
+
+6. Then, type the command ".\venv\Scripts\activate"
+
+
+
+Installing Libraries 
+
+7. In "requirements.txt" within the AMMPER folder, you will find a 
+list of required libraries. Version requirements are noted.
+
+8. In the terminal, for each required library, type the command
+"pip install library-name" For specific versions, type 
+"pip install library-name==versionnumber"
+
+9. Once all libraries are installed, AMMPER is ready to run
+
+
+
+Using AMMPER
+
+10. Open the AMMPER.py script. In the upper-right corner, click the play button
+
+11. In the terminal, the user will be prompted to choose simulation
+parameters. Follow prompts. Simulation will begin once parameters all are set. 
+
+12. When simulation is complete, terminal will present "Simulated completed" as well
+as simulation time in seconds. Simulations time will vary depending on complexity of 
+parameters. 
+
+13. In your explorer tab, a "results" folder will be present, here you find a subfolder containing
+simulation plots, CSVs, and information. subfolder is titled the current date and time.
+
+
+
+Interpreting results
+
+14. CSVs can be exported for interpretation and graphing. Coloums are as follows:
+
+    Generation, X pos, Y pos, Z pos, Health state number.
+
+    X, Y, Z indicates position in plot
+
+    Cell heath numbers are as follows:
+    1 = Healthy
+    2 = Damaged yet viable
+    3 = Necrotic
+    4 = Apoptotic 
+
+    Data is written in scientific notation. 
+
+15. Plots are located in the "plots" folder. There is one plot per each of the 15 generations.
+Plots indicate cells, their health and radiation tracks in the testing spcae. 
+
+    Cells are indicated as circles
+    Health markers are:
+    Blue = Healthy,
+    Purple = Damaged yet viable 
+    Yellow = Apoptotic
+    Orange = Nectrotic 
+
+    Green lines/dots indicate radiation tracks, and shapes will vary depending on radiation type.
+
+For more info on AMMPER, see AMMPER_v3.0_info.txt
