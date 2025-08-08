@@ -123,8 +123,19 @@ def genROS(radData, cells):
     n = len(radData)
     # ROS yields (Plante Radiation Chemistry, from three.jsc.nasa.gov)
     # primary yields in [molecules/100 eV]
-    G_H2O2 = 0.7
-    G_OH = 2.5
+    # Define G-values depending on energyType
+    def get_yields(etype):
+        if etype == 1:  # electron
+            return 0.7, 2.5
+        elif etype == 2:  # proton
+            return 1.2, 4.0
+        elif etype == 3:  # Fe-56
+            return 3.5, 7.0
+        else:
+            return 0.0, 0.0
+
+
+
 
     ROSData = np.empty((0,6))
     # all_data = []
@@ -132,8 +143,11 @@ def genROS(radData, cells):
         cellHit = 0  # boolean for whether or not cell is hit
         radPos = [radData[i, 0], radData[i, 1], radData[i, 2]]
         energy = radData[i, 3]
-        yield_H2O2 = G_H2O2 * energy
-        yield_OH = G_OH * energy
+        etype = int(radData[i, 4])  # energyType column
+        G_H2O2, G_OH = get_yields(etype)
+        yield_H2O2 = G_H2O2 * energy / 100  # Convert from per 100 eV to per eV
+        yield_OH = G_OH * energy / 100
+
 
         # Concentrations values matrix
         C_H2O2 = f * yield_H2O2
@@ -151,7 +165,9 @@ def genROS(radData, cells):
         # Keep initial results for now, can be deleted later
 
         #ROSDataEntry = [radPos[0], radPos[1], radPos[2], yield_H2O2, yield_OH , cellHit]
-        ROSDataEntry = [radPos[0], radPos[1], radPos[2], 0, yield_OH, cellHit]
+        ROSDataEntry = [radPos[0], radPos[1], radPos[2], yield_H2O2, yield_OH, cellHit]
+
+        #ROSDataEntry = [radPos[0], radPos[1], radPos[2], 0, yield_OH, cellHit]
 
         #ROSDataEntry = ROSDataEntry.reshape((1,6))
 

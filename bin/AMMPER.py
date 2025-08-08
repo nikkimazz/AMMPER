@@ -14,7 +14,7 @@ outputs:
     cells: list of cell objects present in simulation space throughout life
     radData: list of radiation events
         [PosX,PosY,PosZ,energy deposition,energyType,protonEnergy]
-        energyType: 2 if from ion, 1 if from electron
+        energyType: 2 if from ion, 1 if from electron, 3 HZE (e.g. Fe-56)
         protonEnergy: energy of proton that initiated radiation event
     ROSData: list of secondary radiation events
         [PosX,PosY,PosZ,yield_H2O2,yield_OH,cellHit]
@@ -27,6 +27,7 @@ outputs:
 """
 @edited by Daniel Palacios 
 @edited by Bobby Flores
+@edited by Nikola Mazzarella
 """
 ###############################################################
 ### GENERIC LIBRARIES
@@ -55,6 +56,9 @@ from genTraverse_groundTesting import genTraverse_groundTesting
 # Requires genTraverse_deepSpace.py
 from genTraverse_deepSpace import genTraverse_deepSpace
 
+# Requires genROSrad.py # particle-type adjusted
+from genROSOldrad import genROSOldrad # this is the particle-type adjusted version
+
 # Requires genROS.py
 from genROS import genROS
 
@@ -77,14 +81,13 @@ from GammaRadGen import GammaRadGen
 ### Radiation Type
 
 # Define the valid options
-valid_radtypes = ['a', 'b', 'c', 'd']
+valid_radtypes = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
 valid_Gy_options = [0, 2.5, 5, 10, 20, 30]
 options_message = ", ".join(map(str, valid_Gy_options))
 
 # Loop to get a valid radiation type
 while True:
-    radType = input(
-        "Please enter what simulation type you would like to run:\n\ta)150 MeV Proton\n\tb)NSRL GCRSim\n\tc)Deep Space\n\td)Gamma\n").lower()
+    radType = input("Please enter what simulation type you would like to run:\n\ta)150 MeV Proton\n\tb)NSRL GCRSim\n\tc)Deep Space\n\td)Gamma\n\te)Fe-56 1 GeV\n\tf)1 GeV Proton\n\tg)1 GeV O-16\n").lower()
     if radType in valid_radtypes:
         break  # Exit the loop since valid input is received
     else:
@@ -132,6 +135,70 @@ elif radType == 'd':
     gen = 15
     radGen = 2
     dose = float(input("Please enter radiation dose. \n"))
+elif radType == "e":
+     while True:
+        radAmount = input(f"Please enter radiation dose. Options are: {options_message} Gy.\n")
+        try:
+            Gy = float(radAmount)
+            if Gy not in valid_Gy_options:
+                print(f"Invalid input: {Gy} is not a valid option. Please choose from {valid_Gy_options}.")
+            else:
+                radType = "1GeV_Fe"
+                N = 64
+                gen = 15
+                radGen = 2
+                if Gy == 0:
+                    radData = np.zeros([1, 6], dtype=float)
+                    ROSData = np.zeros([1, 6], dtype=float)
+                else:
+                    # Add other logic for non-zero Gy values if needed
+                    pass
+                break  # Exit the loop since valid input is received
+        except ValueError:
+            print("Invalid input: Please enter a numeric value.")
+elif radType == "f":
+    while True:
+        radAmount = input(f"Please enter radiation dose. Options are: {options_message} Gy.\n")
+        try:
+            Gy = float(radAmount)
+            if Gy not in valid_Gy_options:
+                print(f"Invalid input: {Gy} is not a valid option. Please choose from {valid_Gy_options}.")
+            else:
+                radType = "1GeV Proton"
+                N = 64
+                gen = 15
+                radGen = 2
+                if Gy == 0:
+                    radData = np.zeros([1, 6], dtype=float)
+                    ROSData = np.zeros([1, 6], dtype=float)
+                else:
+                    #add other logic for non-zero Gy values if needed
+                    pass
+                break  # Exit loop
+        except ValueError:
+            print("Invalid input: Please enter a numeric value.")
+elif radType == "g":
+    while True:
+        radAmount = input(f"Please enter radiation dose. Options are: {options_message} Gy.\n")
+        try:
+            Gy = float(radAmount)
+            if Gy not in valid_Gy_options:
+                print(f"Invalid input: {Gy} is not a valid option. Please choose from {valid_Gy_options}.")
+            else:
+                radType = "1GeV O-16"
+                N = 64
+                gen = 15
+                radGen = 2
+                if Gy == 0:
+                    radData = np.zeros([1, 6], dtype=float)
+                    ROSData = np.zeros([1, 6], dtype=float)
+                else:
+                    #add other logic for non-zero Gy values if needed
+                    pass
+                break  # Exit loop
+        except ValueError:
+            print("Invalid input: Please enter a numeric value.")
+          
 
 ###############################################################
 ### CELL TYPE
@@ -179,7 +246,12 @@ if radType == "150 MeV Proton":
     simDescription = simDescription + "\nRadiation Dose: " + str(Gy)
 if radType == "Gamma":
     simDescription = simDescription + "\nRadiation Dose: " + str(dose)
-
+if radType == "1GeV_Fe":
+    simDescription = simDescription + "\nRadiation Dose: " + str(Gy)
+if radType == "1GeV Proton":
+    simDescription = simDescription + "\nRadiation Dose: " + str(Gy)
+if radType == "1GeV O-16":
+    simDescription = simDescription + "\nRadiation Dose: " + str(Gy)
 ###############################################################
 ### FOLDER AND PATH CREATION
 
@@ -404,6 +476,104 @@ for g in range(1, gen + 1):
                         ROSData = genROS(radData, cells)
                     if ROSType == "Basic ROS":
                         ROSData = genROSOld(radData, cells)
+            elif radType == "1GeV_Fe":
+                if g == radGen:
+                    protonEnergy = 1000 # This is 1 GeV (original people called this protonEnergy it should be named particleEnergy)
+                    # these fluences are pre-calculated to deliver the dose to the volume of water
+                if Gy != 0:
+                    num_tracks = int(Gy / 2.5)
+                    trackChoice = [1] * num_tracks
+                    energyThreshold = 0
+
+                    # Placeholder initialization
+                    radData = np.zeros([1, 6], dtype=float)
+                    ROSData = np.zeros([1, 6], dtype=float)
+
+                    for track in trackChoice:
+                        trackNum = track
+                        # creates a traverse for every track in trackChoice
+                        radData_trans = genTraverse_groundTesting(N, protonEnergy, trackNum, energyThreshold, radType)
+                        # compile all energy depositions from individual tracks together
+                        radData = np.vstack([radData, radData_trans])
+
+                    # remove placeholder of 0s from the beginning of radData
+                    radData = np.delete(radData, (0), axis=0)
+
+                    # direct energy results in ROS generation - use energy depositions to calculate ROS species
+                    # direct energy results in ROS generation - use energy depositions to calculate ROS species
+                if ROSType == "Complex ROS":
+                    ROSData = genROS(radData, cells)
+
+                print("Unique energyTypes in radData before ROS:", np.unique(radData[:, 4]))
+
+                if ROSType == "Basic ROS":
+                    ROSData_total = np.zeros((0, 6))  # assuming genROSOldrad returns [x, y, z, H2O2, OH, cellHit, gen]
+
+                    for etype in [1, 2, 3]:
+                        rad_subset = radData[radData[:, 4] == etype]
+                        if len(rad_subset) > 0:
+                            ROS_partial = genROSOldrad(rad_subset, cells, etype)
+                            ROSData_total = np.vstack([ROSData_total, ROS_partial])
+
+                    ROSData = ROSData_total
+
+
+
+            elif radType == "1GeV Proton":
+                if g == radGen:
+                    protonEnergy = 1000 # This is 1 GeV (original people called this protonEnergy it should be named particleEnergy)
+                    # these fluences are pre-calculated to deliver the dose to the volume of water
+                if Gy != 0:
+                    num_tracks = int(Gy / 2.5)
+                    trackChoice = [1] * num_tracks
+                    energyThreshold = 0
+
+                    # Placeholder initialization
+                    radData = np.zeros([1, 6], dtype=float)
+                    ROSData = np.zeros([1, 6], dtype=float)
+
+                    for track in trackChoice:
+                        trackNum = track
+                        # creates a traverse for every track in trackChoice
+                        radData_trans = genTraverse_groundTesting(N, protonEnergy, trackNum, energyThreshold, radType)
+                        # compile all energy depositions from individual tracks together
+                        radData = np.vstack([radData, radData_trans])
+                    # remove placeholder of 0s from the beginning of radData
+                    radData = np.delete(radData, (0), axis=0)
+
+                # direct energy results in ROS generation - use energy depositions to calculate ROS species
+                if ROSType == "Complex ROS":
+                    ROSData = genROS(radData, cells)
+                elif ROSType == "Basic ROS":
+                    ROSData = genROSOld(radData, cells)
+            
+            elif radType == "1GeV O-16":
+                if g == radGen:
+                    protonEnergy = 1000 # This is 1 GeV (original people called this protonEnergy it should be named particleEnergy)
+                    # these fluences are pre-calculated to deliver the dose to the volume of water
+                if Gy != 0:
+                    num_tracks = int(Gy / 2.5)
+                    trackChoice = [1] * num_tracks
+                    energyThreshold = 0
+                    # Placeholder initialization
+                    radData = np.zeros([1, 6], dtype=float)     
+                    ROSData = np.zeros([1, 6], dtype=float)
+                    for track in trackChoice:
+                        trackNum = track
+                        # creates a traverse for every track in trackChoice 
+                        radData_trans = genTraverse_groundTesting(N, protonEnergy, trackNum, energyThreshold, radType)
+                        # compile all energy depositions from individual tracks together
+                        radData = np.vstack([radData, radData_trans])
+                    # remove placeholder of 0s from the beginning of radData
+                    radData = np.delete(radData, (0), axis=0)
+
+                    # direct energy results in ROS generation - use energy depositions to calculate ROS species
+                    if ROSType == "Complex ROS":
+                        ROSData = genROS(radData, cells)
+                    elif ROSType == "Basic ROS":
+                        ROSData = genROSOld(radData, cells) 
+
+                  
 
     ##########################################################################################################
     ### MOVED CELLS
@@ -453,7 +623,7 @@ for g in range(1, gen + 1):
 
     # if radiation traversal has occured
     if (radType == "150 MeV Proton" and g == radGen and Gy != 0) or (radType == "Deep Space") or (
-            radType == "GCRSim" and g == radGen) or (radType == "Gamma" and g >= radGen):
+            radType == "GCRSim" and g == radGen) or (radType == "Gamma" and g >= radGen) or (radType == "1GeV_Fe" and g >= radGen and Gy != 0) or (radType == "1GeV Proton" and g >= radGen and Gy != 0) or (radType == "1GeV O-16" and g >= radGen and Gy != 0):
         # initialize list of cells affected by ion/electron energy depositions
         dirRadCells = []
         for c in cells:
@@ -474,7 +644,7 @@ for g in range(1, gen + 1):
 
     # if ROS generation has occured (post-radiation)
     if (radType == "150 MeV Proton" and g >= radGen and Gy != 0) or (radType == "Deep Space") or (
-            radType == "GCRSim" and g >= radGen) or (radType == "Gamma" and g >= radGen):
+            radType == "GCRSim" and g >= radGen) or (radType == "Gamma" and g >= radGen) or (radType == "1GeV_Fe" and g >= radGen and Gy != 0) or (radType == "1GeV Proton" and g >= radGen and Gy != 0) or (radType == "1GeV O-16" and g >= radGen and Gy != 0):
         # initialize list of cells affected by ROS
         ROSCells = []
         for c in cells:
@@ -496,7 +666,7 @@ for g in range(1, gen + 1):
     if (radType == "150 MeV Proton" and g > radGen and Gy != 0 and cellType != "rad51") or (
             radType == "Deep Space" and cellType != "rad51") or (
             radType == "GCRSim" and g > radGen and cellType != "rad51") or (
-            radType == "Gamma" and g >= radGen and cellType != "rad51"):
+            radType == "Gamma" and g >= radGen and cellType != "rad51") or (radType == "1GeV_Fe" and g > radGen and Gy != 0 and cellType != "rad51") or (radType == "1GeV Proton" and g > radGen and Gy != 0 and cellType != "rad51") or (radType == "1GeV O-16" and g > radGen and Gy != 0 and cellType != "rad51"):
         # initialize list of cells that have undergone repair mechanisms
         repairedCells = []
         for c in cells:
@@ -535,8 +705,8 @@ for g in range(1, gen + 1):
 
     # documenting cell damage
     # if radiation has occurred
-    if (radType == "150 MeV Proton" and g >= radGen and Gy != 0) or radType == "Deep Space" or (
-            radType == "GCRSim" and g >= radGen) or (radType == "Gamma" and g >= radGen):
+    if (radType == "150 MeV Proton" and g >= radGen and Gy != 0) or radType == "Deep Space" or (radType == "GCRSim" and g >= radGen) or (radType == "Gamma" and g >= radGen) or (radType == "1GeV_Fe" and g >= radGen and Gy != 0) or (radType == "1GeV Proton" and g >= radGen and Gy != 0) or (radType == "1GeV O-16" and g >= radGen and Gy != 0):
+    
         # for every cell damaged by ion or electron energy depositions
         for c in dirRadCells:
             # get information about damaged cell
@@ -574,7 +744,10 @@ for g in range(1, gen + 1):
     if (radType == "150 MeV Proton" and g > radGen and Gy != 0 and cellType != "rad51") or (
             radType == "Deep Space" and cellType != "rad51") or (
             radType == "GCRSim" and g > radGen and cellType != "rad51") or (
-            radType == "Gamma" and g >= radGen and cellType != "rad51"):
+            radType == "Gamma" and g >= radGen and cellType != "rad51") or (radType == "1GeV_Fe" and g > radGen and Gy != 0 and cellType != "rad51") or (radType == "1GeV Proton" and g > radGen and Gy != 0 and cellType != "rad51") or (radType == "1GeV O-16" and g > radGen and Gy != 0 and cellType != "rad51"):
+        
+        print(f"Repair triggered at generation {g} for radiation {radType}")
+
         # for every cell that has undergone repair
         for c in repairedCells:
             # get information about repaired cell
@@ -661,6 +834,28 @@ elif radType == "Gamma":
     np.savetxt(dat_path, data, delimiter=',')
     cellPlot(data, gen, radData, ROSData, radGen, N, plots_path)
 
-print("Plots and data written to Results folder.")
+elif radType == "1GeV_Fe":
+    datName = str(radAmount) + 'Gy'
+    dat_path = currResult_path + datName + ".txt"
+    np.savetxt(dat_path, data, delimiter=',')
+    cellPlot(data, gen, radData, ROSData, radGen, N, plots_path)
 
+elif radType == "1GeV Proton":
+    datName = str(radAmount) + 'Gy'
+    dat_path = currResult_path + datName + ".txt"
+    np.savetxt(dat_path, data, delimiter=',')
+    cellPlot(data, gen, radData, ROSData, radGen, N, plots_path)
+
+elif radType == "1GeV O-16":
+    datName = str(radAmount) + 'Gy'
+    dat_path = currResult_path + datName + ".txt"
+    np.savetxt(dat_path, data, delimiter=',')
+    cellPlot(data, gen, radData, ROSData, radGen, N, plots_path)
+
+# === Add this just after the final elif block ===
+# Save radData to a separate file
+radData_path = os.path.join(currResult_path, "radData.txt")
+np.savetxt(radData_path, radData, delimiter=',')
+
+print("Plots and data written to Results folder.")
 print("time elapsed: {:.2f}s".format(time.time() - overall_start_time))

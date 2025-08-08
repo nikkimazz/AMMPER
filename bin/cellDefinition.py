@@ -58,7 +58,7 @@ inputs:
     radGen: user-defined generation of radiation event (for NSRL type)
     radData: list of radiation events
         [PosX,PosY,PosZ,energy deposition,energyType,protonEnergy]
-        energyType: 2 if from ion, 1 if from electron
+        energyType: 2 if from ion, 1 if from electron, 3 Fe-56
         protonEnergy: energy of proton that initiated radiation event
 outputs:
     c: cell object with adjusted parameters
@@ -93,7 +93,7 @@ inputs:
 outputs:
     c: cell object with adjusted parameters
                 
-@authors: asingh21, MarcellLoza
+@authors: asingh21, MarcellLoza, Nikola Mazzarella
 """
 
 class Cell:
@@ -243,14 +243,30 @@ class Cell:
                                     nucleusHitBool = 1
                 
                 if nucleusHitBool == 1:
-                    if radType == 1: #electron
-                        newSSB = [radPos[0],radPos[1],radPos[2],1]
-                        SSB_map = np.vstack([SSB_map,newSSB])
-                    elif radType == 2: #ion
-                        # nanovolume energy deposition - Plante 25-35 DSB/cell/Gy
-                        numDSB_Ion = 35*dose_Gy
-                        newDSB = [radPos[0],radPos[1],radPos[2],numDSB_Ion]
-                        DSB_map = np.vstack([DSB_map,newDSB])
+                    if radType == 1:  # electron
+                        newSSB = [radPos[0], radPos[1], radPos[2], 1]
+                        SSB_map = np.vstack([SSB_map, newSSB])
+                elif radType == 2:  # proton
+                        numDSB_Ion = 35 * dose_Gy
+                        newDSB = [radPos[0], radPos[1], radPos[2], numDSB_Ion]
+                        DSB_map = np.vstack([DSB_map, newDSB])
+                elif radType == 3:  # Fe-56
+                        numDSB_Ion = 105 * dose_Gy  # 3x scaling vs proton Adjust when literature is available
+                        newDSB = [radPos[0], radPos[1], radPos[2], numDSB_Ion]
+                        DSB_map = np.vstack([DSB_map, newDSB])
+
+              #  if nucleusHitBool == 1:
+                    #if radType == 1: #electron
+                        #newSSB = [radPos[0],radPos[1],radPos[2],1]
+                        #SSB_map = np.vstack([SSB_map,newSSB])
+                #if radType == 2:
+                        #numDSB_Ion = 35*dose_Gy
+                        #newDSB = [radPos[0],radPos[1],radPos[2],numDSB_Ion]
+                        #DSB_map = np.vstack([DSB_map,newDSB])
+                #if radType == 3: #Fe-56
+                    #numDSB_Ion = 105*dose_Gy
+                    #newDSB = [radPos[0],radPos[1],radPos[2],numDSB_Ion]
+                    #DSB_map = np.vstack([DSB_map,newDSB])   
             
                 # for every damage site
                 for SSB in SSB_map:

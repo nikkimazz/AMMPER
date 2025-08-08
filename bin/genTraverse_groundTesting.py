@@ -13,7 +13,7 @@ inputs:
 outputs:
     radData: list of radiation events
         [PosX,PosY,PosZ,energy deposition,energyType,protonEnergy]
-        energyType: 2 if from ion, 1 if from electron
+        energyType: 2 if from ion, 1 if from electron 3 if from HZE
         protonEnergy: energy of proton that initiated radiation event
     
 
@@ -26,6 +26,8 @@ def genTraverse_groundTesting(N,protonEnergy,trackNum,energyThreshold,radType):
     import random as rand
     import math as math
     
+    print(f"[DEBUG] genTraverse_groundTesting called with radType = {radType}")
+
     # convert proton energy to a string
     protonEnergyStr = str(protonEnergy)
 
@@ -46,9 +48,15 @@ def genTraverse_groundTesting(N,protonEnergy,trackNum,energyThreshold,radType):
         Ion_data = Ion_data[0:303,:]
     
     # ID of 1 means energy from Electron
-    El_ID = np.ones([len(El_data),1],dtype = int)
-    # ID of 2 means energy from Ion
-    Ion_ID = np.ones([len(Ion_data),1],dtype = int)*2
+    El_ID = np.ones([len(El_data), 1], dtype=int)
+
+    # Tag ions differently based on radiation type
+    if radType == "1GeV_Fe":
+        Ion_ID = np.ones([len(Ion_data), 1], dtype=int) * 3  # Fe-56
+    else:
+        Ion_ID = np.ones([len(Ion_data), 1], dtype=int) * 2  # Proton or light ion
+
+    
     
     # combine ID with data imported from files
     El_data = np.hstack([El_data,El_ID])
@@ -65,14 +73,18 @@ def genTraverse_groundTesting(N,protonEnergy,trackNum,energyThreshold,radType):
     # if so, save to radData_threshold
     for i in range(len(radData)):
         if radData[i,4] > energyThreshold:
-            # convert position data from angstroms o microns
+            # convert position data from angstroms to microns
             # energy data is in eV
             newDat = [radData[i,0]/1e4,radData[i,1]/1e4,radData[i,2]/1e4,radData[i,4],radData[i,6]]
             radData_threshold = np.vstack([radData_threshold,newDat])
     
     #remove placeholder row
     radData_threshold = np.delete(radData_threshold,(0),axis = 0)
-    
+    print(f"[DEBUG] After thresholding: {radData_threshold.shape[0]} events")
+    print(f"[DEBUG] Counts by energyType:")
+    print(f"  Type 1 (electron): {np.sum(radData_threshold[:,4] == 1)}")
+    print(f"  Type 2 (proton):   {np.sum(radData_threshold[:,4] == 2)}")
+    print(f"  Type 3 (HZE):    {np.sum(radData_threshold[:,4] == 3)}")
     # placeholder values to ensure vertical concatentation 
     # position values of energy deposition by a single event
     x = [0]
@@ -191,5 +203,8 @@ def genTraverse_groundTesting(N,protonEnergy,trackNum,energyThreshold,radType):
     radData_trans = np.hstack([xTrans,yTrans,zTrans,energy,energyType,protonEnergyArr])
     #radData_trans = np.hstack([x,y,z,energy,energyType,protonEnergyArr])
     radData = radData_trans
+ 
     return(radData)
-    
+
+
+
